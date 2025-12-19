@@ -1,0 +1,4 @@
+*.box
+.vagrant
+output-vm/
+tmp/
