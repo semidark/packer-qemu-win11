@@ -32,7 +32,7 @@ sudo apt install packer
 ### Download Required Files
 
 1. **Windows 11 ISO**: Download from [Microsoft Evaluation Center](https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise)
-2. **VirtIO Drivers**: Download from [Fedora People](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso)
+2. **VirtIO Drivers**: Download from [virtio-win GitHub](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md)
 3. **OVMF Firmware**: Usually included with QEMU installation
 
 Place the virtio-win.iso file at `~/.local/share/libvirt/images/virtio-win.iso`
@@ -75,9 +75,9 @@ qemuargs = concat(
 )
 ```
 
-### Windows 11 Compatibility Fixes
+### Windows 11 Compatibility 
 
-Several critical fixes were implemented to ensure Windows 11 compatibility:
+Several fixes were implemented to ensure Windows 11 compatibility:
 
 1. **SCSI Controller Device Definition**: Added `-device virtio-scsi-pci,id=scsi0` and `-device scsi-hd,bus=scsi0.0,drive=drive0` to ensure disk is properly attached
 2. **Network Device Definition**: Added `-device virtio-net,netdev=user.0` and `-netdev user,id=user.0,hostfwd=tcp::{{ .SSHHostPort }}-:5985` for network connectivity
@@ -87,6 +87,7 @@ Several critical fixes were implemented to ensure Windows 11 compatibility:
    - `BypassSecureBootCheck`
    - `BypassRAMCheck`
    - `BypassCPUCheck`
+   - [ ] Check if all Bypasses are required for win11 VM to install and work correctly
 5. **Correct OVMF Firmware**: Using `*_4M.secboot.fd` files in raw format as required by Windows 11
 
 ## Build Process
@@ -164,8 +165,5 @@ This Vagrant box is configured for **development use only** with intentional sec
 5. **Network Connectivity**: Resolved by adding proper network device definitions to qemuargs
 
 ## References
-
 - [Packer QEMU Builder Documentation](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
-- [Windows 11 System Requirements](https://www.microsoft.com/en-us/windows/get-windows-11)
-- [VirtIO Drivers](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
 - [OVMF Firmware](https://github.com/tianocore/tianocore.github.io/wiki/OVMF)
