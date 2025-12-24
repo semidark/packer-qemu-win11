@@ -76,21 +76,21 @@ Connect with VNC viewer to `localhost:5900` to see Windows login screen.
 ## Detailed Verification Checklist
 
 ### Pre-Build Verification
-- [ ] All prerequisites installed (QEMU/KVM, Packer, VirtIO drivers, OVMF)
-- [ ] Windows 11 ISO downloaded and checksum verified
-- [ ] virtio-win.iso available at `~/.local/share/libvirt/images/virtio-win.iso`
+- All prerequisites installed (QEMU/KVM, Packer, VirtIO drivers, OVMF)
+- Windows 11 ISO downloaded and checksum verified
+- virtio-win.iso available at `~/.local/share/libvirt/images/virtio-win.iso`
 
 ### Post-Build Verification
-- [ ] Image integrity check passes with no errors
-- [ ] Image boots to Windows 11 desktop
-- [ ] WinRM service responds on port 5985
-- [ ] Network connectivity works
-- [ ] VirtIO drivers loaded (check Device Manager)
-- [ ] User account `vagrant` with password `vagrant` exists
-- [ ] Auto-login configured for `vagrant` user
-- [ ] Windows Update disabled
-- [ ] UAC disabled (for development use)
-- [ ] WinRM configured for unencrypted basic authentication
+- Image integrity check passes with no errors
+- Image boots to Windows 11 desktop
+- WinRM service responds on port 5985
+- Network connectivity works
+- VirtIO drivers loaded (check Device Manager)
+- User account `vagrant` with password `vagrant` exists
+- Auto-login configured for `vagrant` user
+- Windows Update disabled
+- UAC disabled (for development use)
+- WinRM configured for unencrypted basic authentication
 
 ### Using the build.sh Script for Verification
 ```bash
