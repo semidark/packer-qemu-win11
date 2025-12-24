@@ -18,6 +18,8 @@ TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.
 3. **qemuargs Override**: Custom `-drive` in qemuargs overrides ALL Packer defaults - see windows.pkr.hcl:77-87
 4. **"Windows 10" in Autounattend.xml**: Intentional - Win11 Enterprise Eval ISO uses this image name for compatibility
 5. **WinRM Timeout**: 1h30m timeout at windows.pkr.hcl:95 - Windows 11 install is slow
+6. **TPM Configuration**: Use Packer's built-in `vtpm = true` and `tpm_device_type = "tpm-crb"` - do not manually configure TPM in qemuargs
+7. **Windows 11 Compatibility**: Registry bypass keys must be in the first `Microsoft-Windows-Setup` component in the windowsPE pass
 
 ## Credentials
 - Username: `vagrant` / Password: `vagrant`
@@ -26,4 +28,4 @@ TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.
 ## File Patterns
 - `os_pkrvars/*.pkrvars.hcl` - Add new OS variants here
 - `answer_files/*/Autounattend.xml` - Windows unattended configs with XML namespaces
-- VirtIO drivers loaded from drive `E:` in Autounattend.xml
+- VirtIO drivers loaded from drive `E:` in Autounattend.xml (e.g., `E:\viostor\w11\amd64`)

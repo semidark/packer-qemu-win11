@@ -1,112 +1,171 @@
-# Windows 11 on qemu
+# Windows 11 on QEMU/KVM with Packer
 
-Windows 11 requires UEFI, TPM2 (crb) and probably PCIe (q35)?
+This project builds a Windows 11 virtual machine image using Packer with QEMU/KVM backend. The image is optimized for performance, reliability, and includes all necessary drivers for QEMU virtualized hardware.
 
-So the idea here is to make qemu emulate as "modern" and performant hardware
-as we can.
+## Features
+
+- Fully automated Windows 11 installation using Autounattend.xml
+- UEFI Secure Boot with TPM 2.0 support
+- VirtIO drivers for optimal performance
+- WinRM configured for remote management
+- Vagrant-compatible user account (vagrant/vagrant)
+- Automated build script with error handling
+- Comprehensive verification procedures
+
+## Prerequisites
+
+Before building the Windows 11 image, ensure you have the following installed:
+
+- QEMU/KVM
+- Packer (>= 1.7.0)
+- VirtIO drivers ISO (virtio-win.iso)
+- OVMF firmware (4M secboot variant)
+
+### Installing Prerequisites (Ubuntu/Debian)
+
+```bash
+sudo apt update
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+sudo apt install packer
+```
+
+### Download Required Files
+
+1. **Windows 11 ISO**: Download from [Microsoft Evaluation Center](https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise)
+2. **VirtIO Drivers**: Download from [Fedora People](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso)
+3. **OVMF Firmware**: Usually included with QEMU installation
+
+Place the virtio-win.iso file at `~/.local/share/libvirt/images/virtio-win.iso`
+
+## Implementation Details
+
+### Packer Configuration
+
+The build uses the following key configuration parameters:
 
 ```hcl
-  efi_boot = true
-  vtpm = true
-  tpm_device_type = "tpm-crb"
-  machine_type = "q35"
-  cpu_model = "host"
-  disk_interface = "virtio-scsi"
-  disk_discard = "unmap"
+efi_boot = true
+vtpm = true
+tpm_device_type = "tpm-crb"
+machine_type = "q35"
+cpu_model = "host"
+disk_interface = "virtio-scsi"
+disk_discard = "unmap"
 ```
 
-With this initial configuration starting the build with `PACKER_LOG=1` we'll get something like this;
+### QEMU Arguments
 
-```
-Executing /usr/bin/qemu-system-x86_64: []string{
-  "-machine", "type=q35,accel=kvm",
-  "-vnc", "127.0.0.1:95",
-  "-m", "8192M", "-smp", "4,cores=4", "-vga", "qxl", "-display", "gtk",
-  "-tpmdev", "emulator,id=tpm0,chardev=vtpm",
-  "-cpu", "host",
-  "-device", "virtio-scsi-pci,id=scsi0",
-  "-device", "scsi-hd,bus=scsi0.0,drive=drive0",
-  "-device", "virtio-net,netdev=user.0",
-  "-device", "tpm-crb,tpmdev=tpm0",
-  "-netdev", "user,id=user.0,hostfwd=tcp::3452-:5985",
-  "-name", "windows-11-x64",
-  "-chardev", "socket,id=vtpm,path=/tmp/897791090/vtpm.sock",
-  "-drive", "if=none,file=output-vm/windows-11-x64,id=drive0,cache=writeback,discard=unmap,format=qcow2",
-  "-drive", "file=/home/eb4x/.local/share/libvirt/images/windows-11-x64.iso,media=cdrom",
-  "-drive", "file=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,if=pflash,unit=0,format=raw,readonly=on",
-  "-drive", "file=output-vm/efivars.fd,if=pflash,unit=1,format=raw"
-}
-```
-
-We know we'll need drivers for the paravirtualized virtio hardware, so we need
-to inject the virtio-win.iso. And the way do that is by adding it as a `-drive`
-parameter to `qemuargs` [1], but... adding a `-drive` or `-device` override
-will mean that none of the default configuration Packer sets will be used. So
-let's first insert the defaults from the log output and verify everything still
-works.
+The qemuargs configuration includes all necessary devices:
 
 ```hcl
-  qemuargs = concat(
-    var.efi_boot ? [
-      ["-drive", "if=pflash,unit=0,file=${var.efi_firmware_code},format=raw,readonly=on"],
-      ["-drive", "if=pflash,unit=1,file=output-vm/efivars.fd,format=raw"],
-    ] : [],
-    [
-      ["-drive", "if=none,id=drive0,file=output-vm/${var.os_name}-${var.os_version}-${var.os_arch},format=qcow2,cache=writeback,discard=unmap"],
-      ["-drive", "media=cdrom,file=${local.iso_target_path}"],
-    ]
-  )
+qemuargs = concat(
+  var.efi_boot ? [
+    ["-drive", "if=pflash,unit=0,file=${var.efi_firmware_code},format=raw,readonly=on"],
+    ["-drive", "if=pflash,unit=1,file=${var.output_directory}/efivars.fd,format=raw"],
+  ] : [],
+  [
+    ["-drive", "if=none,id=drive0,file=${var.output_directory}/${var.os_name}-${var.os_version}-${var.os_arch},format=qcow2,cache=writeback,discard=unmap"],
+    ["-drive", "media=cdrom,file=${local.iso_target_path}"],
+    ["-drive", "media=cdrom,file=${var.local_libvirt_images}/virtio-win.iso"],
+    ["-device", "virtio-scsi-pci,id=scsi0"],
+    ["-device", "scsi-hd,bus=scsi0.0,drive=drive0"],
+    ["-device", "virtio-net,netdev=user.0"],
+    ["-netdev", "user,id=user.0,hostfwd=tcp::{{ .SSHHostPort }}-:5985"],
+  ]
+)
 ```
 
-I'm putting the `efi_firmware_{code,vars}` inside a conditional block so
-they're only included when `efi_boot` is `true`. Also worth noting, the
-`efi_firmware_vars` is a template, and is copied out as `efivars.fd` to live
-beside the main vm image.
+### Windows 11 Compatibility Fixes
 
-Now that that's taken care of, we add our virtio-win.iso with the additional
-`-drive` parameter.
+Several critical fixes were implemented to ensure Windows 11 compatibility:
 
-```hcl
-      ["-drive", "media=cdrom,file=${var.local_libvirt_images}/virtio-win.iso"],
+1. **SCSI Controller Device Definition**: Added `-device virtio-scsi-pci,id=scsi0` and `-device scsi-hd,bus=scsi0.0,drive=drive0` to ensure disk is properly attached
+2. **Network Device Definition**: Added `-device virtio-net,netdev=user.0` and `-netdev user,id=user.0,hostfwd=tcp::{{ .SSHHostPort }}-:5985` for network connectivity
+3. **TPM 2.0 Configuration**: Using Packer's built-in `vtpm = true` and `tpm_device_type = "tpm-crb"` (removed duplicate manual TPM configuration that was causing issues)
+4. **Registry Bypass Keys**: Added four registry keys in Autounattend.xml to bypass Windows 11 hardware requirements:
+   - `BypassTPMCheck`
+   - `BypassSecureBootCheck`
+   - `BypassRAMCheck`
+   - `BypassCPUCheck`
+5. **Correct OVMF Firmware**: Using `*_4M.secboot.fd` files in raw format as required by Windows 11
+
+## Build Process
+
+### Using the Build Script (Recommended)
+
+```bash
+# Normal build
+./build.sh
+
+# Clean build (removes previous output)
+./build.sh --clean
+
+# Debug build (keeps temporary files)
+./build.sh --debug
 ```
 
-Now let's add Autounattend.xml and some drivers via floppy.
-
-```hcl
-  floppy_files = var.os_name == "windows" ? [
-    "answer_files/${var.os_name}-${var.os_version}-${var.os_arch}/Autounattend.xml"
-  ] : []
-```
-
-Adding drivers to the `Autounattend.xml` should look something like this;
-
-```xml
-...
-    <settings pass="windowsPE">
-        <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <DriverPaths>
-                <PathAndCredentials wcm:action="add" wcm:keyValue="viostor">
-                    <Path>E:\vioscsi\w11\amd64</Path>
-                </PathAndCredentials>
-            </DriverPaths>
-            ...
-        </component>
-...
-```
-
-Now for the big dissapointment,
-
-> "This PC doesn't currently meed Windows 11 system requirements"
-
-Turns out we need to use the `*_4M.secboot.qcow2` files. And they're not `raw`
-as packer expects, but `qcow2`. Thankfully, our earlier work of putting the
-`-drives` params in `qemuargs`, this is an easy fix.
-
-# Build
+### Manual Build
 
 ```shell
+mkdir -p tmp
 PACKER_LOG=1 packer init windows.pkr.hcl
 TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.pkrvars.hcl windows.pkr.hcl
 ```
 
-[1] https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu#qemu-specific-configuration-reference
+## Verification
+
+See [VERIFICATION.md](VERIFICATION.md) for detailed verification procedures.
+
+Quick verification methods:
+
+1. **Image integrity check**:
+   ```bash
+   qemu-img check output-vm/windows-11-x64
+   ```
+
+2. **Quick boot test with WinRM**:
+   ```bash
+   qemu-system-x86_64 \
+     -machine q35,accel=kvm \
+     -cpu host \
+     -smp 2 \
+     -m 4096 \
+     -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd \
+     -drive if=pflash,format=raw,file=output-vm/efivars.fd \
+     -device virtio-scsi-pci,id=scsi0 \
+     -device scsi-hd,bus=scsi0.0,drive=drive0 \
+     -drive if=none,id=drive0,file=output-vm/windows-11-x64,format=qcow2 \
+     -device virtio-net,netdev=user.0 \
+     -netdev user,id=user.0,hostfwd=tcp::5985-:5985 \
+     -display none \
+     -daemonize
+   
+   sleep 60
+   curl -v http://localhost:5985/wsman
+   pkill qemu-system-x86_64
+   ```
+
+## Security Notice
+
+This Vagrant box is configured for **development use only** with intentional security relaxations:
+- Default credentials: `vagrant/vagrant`
+- Unencrypted WinRM on port 5985
+- UAC disabled
+- Basic authentication enabled
+
+**Do not use in production without proper hardening.**
+
+## Known Issues and Resolutions
+
+1. **Windows 11 Hardware Requirements**: Resolved by adding registry bypass keys in Autounattend.xml
+2. **TPM Socket Path Issues**: Resolved by relying on Packer's built-in TPM handling instead of manual configuration
+3. **Duplicate Microsoft-Windows-Setup Component**: Resolved by merging RunSynchronous commands into the correct component block
+4. **Missing SCSI Controller**: Resolved by adding proper device definitions to qemuargs
+5. **Network Connectivity**: Resolved by adding proper network device definitions to qemuargs
+
+## References
+
+- [Packer QEMU Builder Documentation](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
+- [Windows 11 System Requirements](https://www.microsoft.com/en-us/windows/get-windows-11)
+- [VirtIO Drivers](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
+- [OVMF Firmware](https://github.com/tianocore/tianocore.github.io/wiki/OVMF)

@@ -42,6 +42,16 @@ variable "iso_checksum" {
   type = string
 }
 
+variable "output_directory" {
+  type = string
+  default = "output-vm"
+}
+
+variable "headless" {
+  type    = bool
+  default = false
+}
+
 locals {
   iso_target_path = "${var.local_libvirt_images}/${var.os_name}-${var.os_version}-${var.os_arch}.iso"
 }
@@ -49,9 +59,12 @@ locals {
 source "qemu" "vm" {
   vm_name = "${var.os_name}-${var.os_version}-${var.os_arch}"
 
-  efi_boot = "${var.efi_boot}"
-  efi_firmware_code = "${var.efi_firmware_code}"
-  efi_firmware_vars = "${var.efi_firmware_vars}"
+  efi_boot = var.efi_boot
+  efi_firmware_code = var.efi_firmware_code
+  efi_firmware_vars = var.efi_firmware_vars
+
+  headless = var.headless
+  output_directory = var.output_directory
 
   vtpm = true
   tpm_device_type = "tpm-crb"
@@ -70,19 +83,23 @@ source "qemu" "vm" {
   disk_size = "60G"
   disk_discard = "unmap"
 
-  iso_url = "${var.iso_url}"
-  iso_checksum = "${var.iso_checksum}"
-  iso_target_path = "${local.iso_target_path}"
+  iso_url = var.iso_url
+  iso_checksum = var.iso_checksum
+  iso_target_path = local.iso_target_path
 
   qemuargs = concat(
     var.efi_boot ? [
       ["-drive", "if=pflash,unit=0,file=${var.efi_firmware_code},format=raw,readonly=on"],
-      ["-drive", "if=pflash,unit=1,file=output-vm/efivars.fd,format=raw"],
+      ["-drive", "if=pflash,unit=1,file=${var.output_directory}/efivars.fd,format=raw"],
     ] : [],
     [
-      ["-drive", "if=none,id=drive0,file=output-vm/${var.os_name}-${var.os_version}-${var.os_arch},format=qcow2,cache=writeback,discard=unmap"],
+      ["-drive", "if=none,id=drive0,file=${var.output_directory}/${var.os_name}-${var.os_version}-${var.os_arch},format=qcow2,cache=writeback,discard=unmap"],
       ["-drive", "media=cdrom,file=${local.iso_target_path}"],
       ["-drive", "media=cdrom,file=${var.local_libvirt_images}/virtio-win.iso"],
+      ["-device", "virtio-scsi-pci,id=scsi0"],
+      ["-device", "scsi-hd,bus=scsi0.0,drive=drive0"],
+      ["-device", "virtio-net,netdev=user.0"],
+      ["-netdev", "user,id=user.0,hostfwd=tcp::{{ .SSHHostPort }}-:5985"],
     ]
   )
 
@@ -95,6 +112,9 @@ source "qemu" "vm" {
   winrm_timeout = "1h30m"
   winrm_username = "vagrant"
   winrm_password = "vagrant"
+  
+  shutdown_command = "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\""
+  shutdown_timeout = "15m"
 }
 
 build {
