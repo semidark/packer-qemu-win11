@@ -5,6 +5,10 @@ packer {
       version = ">= 1.0.7"
       source  = "github.com/hashicorp/qemu"
     }
+    windows-update = {
+      version = "0.16.8"
+      source  = "github.com/rgl/windows-update"
+    }
   }
 }
 
@@ -21,6 +25,12 @@ variable "os_arch" {
 variable "efi_boot" {
   type = bool
   default = true
+}
+
+variable "install_updates" {
+  type = bool
+  default = true
+  description = "Whether to install Windows updates during the build process. Set to false for faster iteration builds."
 }
 variable "efi_firmware_code" {
   type = string
@@ -109,7 +119,7 @@ source "qemu" "vm" {
   ]
 
   communicator = "winrm"
-  winrm_timeout = "1h30m"
+  winrm_timeout = "3h"
   winrm_username = "vagrant"
   winrm_password = "vagrant"
   
@@ -121,4 +131,47 @@ build {
   sources = [
     "source.qemu.vm"
   ]
+
+  provisioner "powershell" {
+    scripts = ["./scripts/0-firstlogin.ps1"]
+  }
+
+  provisioner "windows-restart" {
+    restart_timeout = "30m"
+  }
+
+  # Conditionally install Windows updates based on the install_updates variable
+  # When install_updates = false, this provisioner is completely skipped for faster builds
+  dynamic "provisioner" {
+    for_each = var.install_updates ? [1] : []
+    labels = ["windows-update"]
+    content {
+      search_criteria = "IsInstalled=0"
+      filters = [
+        "exclude:$_.Title -like '*Preview*'",
+        "include:$true"
+      ]
+      update_limit = 25
+    }
+  }
+
+  provisioner "powershell" {
+    scripts = ["./scripts/70-install-qemu-ga.ps1"]
+  }
+
+  provisioner "windows-restart" {
+    restart_timeout = "30m"
+  }
+
+  provisioner "powershell" {
+    scripts = ["./scripts/90-compact.ps1"]
+  }
+
+  # Copy Windows Update toggle scripts to the VM
+  # These scripts are always copied regardless of install_updates setting
+  # so they are available for runtime toggling of Windows Updates
+  provisioner "file" {
+    source = "./scripts/windows-update/"
+    destination = "C:/Scripts/WindowsUpdate/"
+  }
 }

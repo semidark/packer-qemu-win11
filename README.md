@@ -1,6 +1,6 @@
 # Windows 11 on QEMU/KVM with Packer
 
-This project builds a Windows 11 virtual machine image using Packer with QEMU/KVM backend. The image is optimized for performance, reliability, and includes all necessary drivers for QEMU virtualized hardware.
+This project builds a Windows 11 virtual machine image using Packer with QEMU/KVM backend. The image is optimized for performance, reliability, and includes all necessary drivers for QEMU virtualized hardware. Phase 1 enhancements include Windows Update integration, QEMU Guest Agent, and disk compaction for reduced image size.
 
 ## Features
 
@@ -11,6 +11,10 @@ This project builds a Windows 11 virtual machine image using Packer with QEMU/KV
 - Vagrant-compatible user account (vagrant/vagrant)
 - Automated build script with error handling
 - Comprehensive verification procedures
+- Windows Update integration for up-to-date system components
+- QEMU Guest Agent for enhanced VM management and testing
+- Disk compaction for ~40% smaller final images
+- Automated testing infrastructure using QEMU Guest Agent
 
 ## Prerequisites
 
@@ -103,7 +107,17 @@ Several fixes were implemented to ensure Windows 11 compatibility:
 
 # Debug build (keeps temporary files)
 ./build.sh --debug
+
+# Launch built image for testing
+./build.sh launch
+
+# Test built image using QEMU Guest Agent
+./build.sh test
 ```
+
+**Note**: With Phase 1 enhancements, build time has increased from ~30-45 minutes to ~3-4 hours due to Windows Update integration. However, this provides security-enhanced images with the latest patches. The disk compaction feature reduces final image size by ~40% (from ~12-15GB to ~8-9GB).
+
+For detailed information about Phase 1 implementation, see [Phase 1 Implementation Documentation](docs/PHASE1-IMPLEMENTATION.md).
 
 ### Manual Build
 
@@ -112,6 +126,66 @@ mkdir -p tmp
 PACKER_LOG=1 packer init windows.pkr.hcl
 TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.pkrvars.hcl windows.pkr.hcl
 ```
+
+## Windows Update Management
+
+This project provides flexible Windows Update control with both build-time and runtime mechanisms for managing update installation.
+
+### Build-time Control
+
+Control Windows Update installation during the Packer build process using the `install_updates` variable:
+
+- `install_updates = true` (default): Windows Updates are installed during build, adding 3-4 hours to build time but providing security-enhanced images
+- `install_updates = false`: Skips Windows Update installation for faster builds (development/testing)
+
+To build without Windows Updates:
+```shell
+TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.pkrvars.hcl -var install_updates=false windows.pkr.hcl
+```
+
+Or using the build script:
+```shell
+./build.sh --clean  # Will still install updates by default
+```
+
+### Runtime Control
+
+PowerShell scripts are available in `C:\Scripts\WindowsUpdate\` for runtime control of Windows Updates on built images:
+
+- `Disable-WindowsUpdates.ps1` - Disables Windows Update services and sets blocking registry keys
+- `Enable-WindowsUpdates.ps1` - Re-enables Windows Update and restores normal operation
+- `Get-WindowsUpdateStatus.ps1` - Reports current Windows Update configuration state
+
+These scripts require Administrator privileges and provide comprehensive Windows Update management:
+- Service management (stop/disable/enable Windows Update services)
+- Registry configuration (block/allow automatic updates)
+- Scheduled task reminders (to re-enable updates for security)
+- Status reporting (current configuration state)
+- Marker files (track when updates were disabled)
+- Desktop indicators (visual notification of disabled updates)
+
+Usage examples:
+```powershell
+# Disable Windows Updates for testing (with confirmation)
+C:\Scripts\WindowsUpdate\Disable-WindowsUpdates.ps1
+
+# Disable Windows Updates without prompts
+C:\Scripts\WindowsUpdate\Disable-WindowsUpdates.ps1 -Force
+
+# Enable Windows Updates and check for updates immediately
+C:\Scripts\WindowsUpdate\Enable-WindowsUpdates.ps1 -Force -CheckNow
+
+# Check current Windows Update status
+C:\Scripts\WindowsUpdate\Get-WindowsUpdateStatus.ps1
+```
+
+### Security Best Practices
+
+1. **Always re-enable Windows Updates** after testing to ensure systems receive critical security patches
+2. **Use build-time control** (`install_updates=false`) for development and testing to reduce build times
+3. **Use runtime control** for temporary disabling of updates on deployed systems
+4. **Monitor disabled systems** using the reminder scheduled tasks that prompt to re-enable updates
+5. **Regular status checks** using `Get-WindowsUpdateStatus.ps1` to verify update configuration
 
 ## Verification
 
