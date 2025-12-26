@@ -70,9 +70,116 @@ These scripts require Administrator privileges and provide:
 - Marker files (track when updates were disabled)
 - Desktop indicators (visual notification of disabled updates)
 
+## Security Considerations
+
+**⚠️ WARNING: RDP is enabled by default on port 3389 with known credentials.**
+
+This image is configured for **development and testing only** with the following security risks:
+
+### RDP Security Risks
+- **Default credentials**: `vagrant/vagrant` are publicly known
+- **Network exposure**: RDP is accessible on port 3389
+- **Brute force attacks**: RDP is a common target for automated attacks
+- **Credential theft**: Unencrypted RDP sessions can expose credentials
+- **Vulnerability exploitation**: RDP vulnerabilities provide system access
+
+### Mitigation Recommendations
+1. **Change default credentials immediately** after deployment
+2. **Use Network Level Authentication (NLA)** to reduce attack surface
+3. **Restrict access via firewall rules** to specific IP addresses or networks
+4. **Use VPN for remote access** instead of exposing RDP to the internet
+5. **Implement account lockout policies** to prevent brute force attacks
+6. **Keep Windows updated** to patch known RDP vulnerabilities
+7. **Consider disabling RDP** if not needed for your use case
+8. **Use certificate-based authentication** instead of passwords when possible
+
+**Do not use this image in production without proper hardening.**
+
 ## Credentials
 - Username: `vagrant` / Password: `vagrant`
-- WinRM on port 5985 (unencrypted basic auth)
+
+## Remote Access Configuration
+
+All three remote access protocols are fully configured and enabled in the guest OS:
+
+### WinRM (Windows Remote Management)
+- **Guest Port**: 5985 (HTTP)
+- **Host Port**: 5985 (after `./build.sh launch`)
+- **Configuration**: Unencrypted basic auth (development only)
+- **Connection from Windows**: `Enter-PSSession -ComputerName localhost -Port 5985 -Credential vagrant`
+- **Connection from Linux**: Use pywinrm (see below)
+
+#### WinRM from Linux
+PowerShell on Linux has limitations with Basic auth. Use pywinrm instead:
+
+```bash
+# Install pywinrm
+pip install pywinrm
+
+# Python script to connect
+python3 -c "
+import winrm
+session = winrm.Session('localhost:5985', auth=('vagrant', 'vagrant'))
+result = session.run_ps('hostname')
+print(result.std_out.decode('utf-8'))
+"
+```
+
+Alternative: Use evil-winrm:
+```bash
+gem install evil-winrm
+evil-winrm -i localhost -u vagrant -p vagrant -P 5985
+```
+
+### SSH (OpenSSH Server)
+- **Guest Port**: 22
+- **Host Port**: 2222 (after `./build.sh launch`)
+- **Default Shell**: PowerShell
+- **Connection**: `ssh -p 2222 vagrant@localhost`
+
+### RDP (Remote Desktop)
+- **Guest Port**: 3389
+- **Host Port**: 33389 (after `./build.sh launch`)
+- **NLA**: Enabled
+- **Connection**: `xfreerdp /v:localhost:33389 /u:vagrant /p:vagrant`
+
+## Testing Commands
+```shell
+# Launch built image for testing
+./build.sh launch
+
+# Launch with VNC display support
+./build.sh launch --vnc
+
+# Launch with SPICE display support
+./build.sh launch --spice
+
+# Test built image using QEMU Guest Agent
+./build.sh test
+
+# SSH access to launched VM
+ssh -p 2222 vagrant@localhost
+
+# RDP access to launched VM
+xfreerdp /v:localhost:33389 /u:vagrant /p:vagrant
+
+# VNC access (requires launch with --vnc)
+vncviewer localhost:0
+
+# SPICE access (requires launch with --spice)
+spicy -h localhost -p 5930
+
+# WinRM access (PowerShell)
+Enter-PSSession -ComputerName localhost -Port 5985 -Credential (Get-Credential vagrant)
+
+# WinRM access from Linux (pywinrm)
+python3 -c "
+import winrm
+session = winrm.Session('localhost:5985', auth=('vagrant', 'vagrant'))
+result = session.run_ps('hostname')
+print(result.std_out.decode('utf-8'))
+"
+```
 
 ## Provisioning Scripts
 

@@ -209,6 +209,92 @@ Key log locations for troubleshooting:
 - QEMU logs: Visible when launching with `./build.sh launch`
 - Windows Event Logs: Accessible via launched VM
 
+## Additional Features
+
+During the Phase 1 implementation, several features were implemented ahead of schedule to enhance the functionality and usability of the Windows 11 image. These features include Windows Update runtime control scripts, OpenSSH Server installation, and RDP enablement.
+
+### Windows Update Runtime Control Scripts
+
+A set of PowerShell scripts was implemented to provide runtime control over Windows Updates, allowing users to enable or disable Windows Updates after the image has been built and deployed.
+
+**Key Benefits:**
+- Flexibility to disable Windows Updates for development or testing environments
+- Ability to re-enable Windows Updates when needed for security patches
+- Visual indicators on the desktop when updates are disabled
+- Automated reminders to re-enable updates for security compliance
+
+**Implementation Details:**
+- Scripts located in [`scripts/windows-update/`](../scripts/windows-update/)
+- Copied to `C:\Scripts\WindowsUpdate\` during the build process
+- Three scripts provided:
+  - [`Disable-WindowsUpdates.ps1`](../scripts/windows-update/Disable-WindowsUpdates.ps1) - Disables Windows Update services and sets blocking registry keys
+  - [`Enable-WindowsUpdates.ps1`](../scripts/windows-update/Enable-WindowsUpdates.ps1) - Re-enables Windows Update and restores normal operation
+  - [`Get-WindowsUpdateStatus.ps1`](../scripts/windows-update/Get-WindowsUpdateStatus.ps1) - Reports current Windows Update configuration state
+- Features include service management, registry configuration, scheduled task reminders, marker files, and desktop indicators
+
+**Usage Instructions:**
+- Run `Disable-WindowsUpdates.ps1` as Administrator to disable Windows Updates
+- Run `Enable-WindowsUpdates.ps1` as Administrator to re-enable Windows Updates
+- Run `Get-WindowsUpdateStatus.ps1` to check the current Windows Update configuration
+
+**Security Considerations:**
+- Disabling Windows Updates removes an important security mechanism
+- Should only be used in controlled environments or for short periods
+- Reminder system helps prevent indefinite disabling of updates
+
+### OpenSSH Server Installation
+
+OpenSSH Server was implemented to provide secure shell access to the Windows 11 image, offering an alternative to WinRM for remote management.
+
+**Key Benefits:**
+- Secure remote access using industry-standard SSH protocol
+- Familiar interface for Linux administrators
+- Encrypted communication channel
+- Integration with existing SSH key management systems
+
+**Implementation Details:**
+- OpenSSH Server is installed during the Windows 11 installation process via Autounattend.xml
+- Located in the specialize pass of the unattend file
+- Automatically configured to start on boot
+- Firewall groups are automatically configured to allow SSH access
+
+**Usage Instructions:**
+- SSH access is available using the vagrant user credentials
+- Default port is 22
+- Connect using: `ssh vagrant@<ip_address>`
+
+**Security Considerations:**
+- Default credentials should be changed in production environments
+- SSH keys should be used instead of passwords for production use
+- Regular updates are important to address security vulnerabilities
+
+### RDP Enablement
+
+Remote Desktop Protocol (RDP) was enabled during the Windows 11 installation process to provide graphical remote access to the system.
+
+**Key Benefits:**
+- Full graphical desktop access remotely
+- Familiar Windows interface for users
+- Support for multiple monitors and audio redirection
+- Integration with Windows authentication systems
+
+**Implementation Details:**
+- RDP is enabled during the Windows 11 installation process via Autounattend.xml
+- Located in the specialize pass of the unattend file
+- Firewall groups are automatically configured to allow RDP access
+- Configured to allow connections from any network profile
+
+**Usage Instructions:**
+- RDP access is available using the vagrant user credentials
+- Default port is 3389
+- Connect using any RDP client with: `<ip_address>:3389`
+
+**Security Considerations:**
+- RDP is enabled by default with basic authentication
+- Strong passwords or certificate-based authentication should be used in production
+- Network-level authentication is recommended for enhanced security
+- Consider restricting RDP access to specific IP addresses or networks
+
 ## Next Steps (Phase 2 Preview)
 
 Based on the feature porting analysis, Phase 2 will focus on enhancing the user experience and expanding capabilities:
@@ -219,7 +305,132 @@ Based on the feature porting analysis, Phase 2 will focus on enhancing the user 
 4. **Performance Optimizations**: .NET assembly compilation and additional system tuning
 5. **Extended Testing Framework**: Additional automated test scenarios
 
+Note: OpenSSH Server installation and RDP enablement features have been implemented ahead of schedule and moved from Phase 3 to the current release.
+
 These enhancements will build upon the solid foundation established in Phase 1, providing even more value and flexibility for users of the packer-qemu-win11 project.
+
+## Security Considerations
+
+**⚠️ CRITICAL: This image is configured for development/testing only and has significant security vulnerabilities.**
+
+Several security considerations should be noted regarding the implemented features:
+
+### RDP Security
+
+Remote Desktop Protocol (RDP) is enabled by default in the built images to facilitate easy access for development and testing purposes. However, this presents **serious security risks** in production environments.
+
+**Security Risks:**
+- **Network exposure**: RDP on port 3389 is one of the most commonly attacked services on the internet
+- **Known credentials**: The default `vagrant/vagrant` credentials are publicly documented and widely known
+- **Brute force attacks**: Automated bots constantly scan for open RDP ports and attempt credential attacks
+- **Credential theft**: Unencrypted RDP sessions can expose credentials through man-in-the-middle attacks
+- **Vulnerability exploitation**: RDP has a history of critical vulnerabilities (e.g., BlueKeep, DejaBlue) that provide remote code execution
+- **Lateral movement**: Compromised RDP access can be used to pivot to other systems on the network
+
+**Mitigation Best Practices:**
+
+1. **Change Default Credentials Immediately**
+   - Replace `vagrant/vagrant` with a strong, unique password
+   - Use passwords with at least 16 characters including uppercase, lowercase, numbers, and symbols
+   - Consider using a password manager to generate and store credentials
+
+2. **Enable Network Level Authentication (NLA)**
+   ```powershell
+   # Enable NLA via PowerShell
+   Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name UserAuthentication -Value 1
+   ```
+   - NLA requires authentication before establishing a full RDP session
+   - Significantly reduces attack surface and resource consumption from attacks
+
+3. **Restrict Access via Firewall Rules**
+   ```powershell
+   # Allow RDP only from specific IP address
+   New-NetFirewallRule -DisplayName "RDP from Trusted IP" -Direction Inbound -LocalPort 3389 -Protocol TCP -Action Allow -RemoteAddress 192.168.1.100
+   
+   # Remove default RDP rule that allows all connections
+   Remove-NetFirewallRule -DisplayName "Remote Desktop - User Mode (TCP-In)"
+   ```
+
+4. **Use VPN for Remote Access**
+   - Never expose RDP directly to the internet
+   - Use a VPN solution to create a secure tunnel before accessing RDP
+   - Consider using Azure Bastion, AWS Systems Manager Session Manager, or similar cloud-native solutions
+
+5. **Implement Account Lockout Policies**
+   ```powershell
+   # Set account lockout policy
+   net accounts /lockoutthreshold:5 /lockoutduration:30 /lockoutwindow:30
+   ```
+   - Prevents brute force attacks by locking accounts after failed attempts
+   - Balance security with usability to avoid locking out legitimate users
+
+6. **Keep Windows Updated**
+   - Regularly install Windows updates to patch known RDP vulnerabilities
+   - Enable automatic updates or use WSUS for enterprise environments
+   - Monitor security bulletins for critical RDP patches
+
+7. **Consider Disabling RDP**
+   ```powershell
+   # Disable RDP if not needed
+   Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 1
+   ```
+   - If graphical access is not required, disable RDP entirely
+   - Use SSH or WinRM for remote management instead
+
+8. **Use Certificate-Based Authentication**
+   - Configure RDP to require certificates instead of passwords
+   - Implement smart card authentication for enhanced security
+   - Use Azure AD authentication for cloud-integrated environments
+
+9. **Enable RDP Logging and Monitoring**
+   ```powershell
+   # Enable RDP connection logging
+   Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name fLogEvents -Value 1
+   ```
+   - Monitor Event Viewer for failed login attempts (Event ID 4625)
+   - Set up alerts for suspicious RDP activity
+   - Use Security Information and Event Management (SIEM) tools for centralized monitoring
+
+10. **Change Default RDP Port (Security Through Obscurity)**
+    ```powershell
+    # Change RDP port to non-standard port (e.g., 33389)
+    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name PortNumber -Value 33389
+    
+    # Update firewall rule
+    New-NetFirewallRule -DisplayName "RDP Custom Port" -Direction Inbound -LocalPort 33389 -Protocol TCP -Action Allow
+    ```
+    - Note: This is not a substitute for proper security measures
+    - Reduces automated scanning but does not prevent targeted attacks
+
+**Production Deployment Checklist:**
+
+Before deploying this image in any production or internet-facing environment:
+
+- [ ] Change default `vagrant/vagrant` credentials
+- [ ] Enable Network Level Authentication (NLA)
+- [ ] Configure firewall rules to restrict RDP access
+- [ ] Implement VPN or bastion host for RDP access
+- [ ] Enable account lockout policies
+- [ ] Install all Windows security updates
+- [ ] Enable RDP connection logging and monitoring
+- [ ] Consider disabling RDP if not required
+- [ ] Review and harden all other security settings
+- [ ] Conduct security assessment and penetration testing
+
+### Windows Update Management
+
+While the Windows Update runtime control scripts provide flexibility, disabling Windows Updates removes an important security mechanism:
+
+**Risks:**
+- Systems become vulnerable to known exploits that have been patched
+- Compliance requirements may mandate keeping systems up to date
+- Delayed patching can lead to larger update packages that are harder to install
+
+**Best Practices:**
+- Only disable Windows Updates in controlled development or testing environments
+- Re-enable Windows Updates regularly for security patches
+- Use the built-in reminder system to prevent indefinite disabling of updates
+- Consider using Windows Server Update Services (WSUS) for enterprise environments
 
 ## References
 

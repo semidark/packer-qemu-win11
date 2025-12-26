@@ -170,6 +170,8 @@ show_usage() {
     echo "  -c, --clean             Clean build (remove previous output)"
     echo "  -d, --debug             Debug mode (keep temporary files)"
     echo "  -n, --no-windows-updates Skip Windows Updates installation (faster builds)"
+    echo "  -s, --spice             Enable SPICE for launch mode"
+    echo "  -v, --vnc               Enable VNC for launch mode"
     echo "  -h, --help              Show this help message"
     echo ""
     echo "Examples:"
@@ -178,6 +180,8 @@ show_usage() {
     echo "  $0 -d                 # Debug build"
     echo "  $0 -n                 # Build without Windows Updates"
     echo "  $0 --no-windows-updates # Same as above"
+    echo "  $0 launch --vnc       # Launch with VNC enabled"
+    echo "  $0 launch --spice     # Launch with SPICE enabled"
 }
 
 # Function to launch Windows 11 image with QEMU
@@ -218,6 +222,24 @@ launch_win11() {
     
     # Launch QEMU with UEFI, TPM, and QEMU Guest Agent support
     log_info "Starting QEMU with UEFI, TPM, and QEMU Guest Agent..."
+    # Check display options
+    local display_options=""
+    if [[ "$ENABLE_VNC" == true ]] && [[ "$ENABLE_SPICE" == true ]]; then
+        log_error "Cannot enable both VNC and SPICE simultaneously"
+        exit 1
+    elif [[ "$ENABLE_SPICE" == true ]]; then
+        display_options="-spice port=5930,disable-ticketing=on -device virtio-serial-pci -chardev spicevmc,id=spicechannel0,name=vdagent -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0"
+        log_info "SPICE enabled on port 5930"
+    elif [[ "$ENABLE_VNC" == true ]]; then
+        display_options="-vnc :0 -monitor stdio"
+        log_info "VNC enabled on :0"
+    else
+        display_options="-nographic"
+        log_info "No graphics display enabled, using nographic mode"
+    fi
+    
+    # Launch QEMU with UEFI, TPM, and QEMU Guest Agent support
+    log_info "Starting QEMU with UEFI, TPM, and QEMU Guest Agent..."
     qemu-system-x86_64 \
         -machine q35,smm=on \
         -global driver=cfi.pflash01,property=secure,value=on \
@@ -233,7 +255,9 @@ launch_win11() {
         -chardev socket,path="$socket_path",server=on,wait=off,id=qga0 \
         -device virtio-serial-pci \
         -device virtserialport,chardev=qga0,name=org.qemu.guest_agent.0 \
-        -nographic
+        -netdev user,id=user.0,hostfwd=tcp::33389-:3389,hostfwd=tcp::2222-:22,hostfwd=tcp::5985-:5985,hostfwd=tcp::5986-:5986 \
+        -device virtio-net,netdev=user.0 \
+        $display_options
     
     log_success "QEMU session ended"
 }
@@ -350,6 +374,8 @@ test_win11() {
 CLEAN_BUILD=false
 DEBUG=false
 SKIP_WINDOWS_UPDATES=false
+ENABLE_VNC=false
+ENABLE_SPICE=false
 COMMAND="build"
 
 while [[ $# -gt 0 ]]; do
@@ -364,6 +390,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         -n|--no-windows-updates)
             SKIP_WINDOWS_UPDATES=true
+            shift
+            ;;
+        -v|--vnc)
+            ENABLE_VNC=true
+            shift
+            ;;
+        -s|--spice)
+            ENABLE_SPICE=true
             shift
             ;;
         -h|--help)

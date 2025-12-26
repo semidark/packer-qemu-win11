@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 function Write-Log {
     param([string]$Message)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    Write-Host "[$timestamp] $Message"
+    Write-Output "[$timestamp] $Message"
 }
 
 Write-Log "Starting first login bootstrap script..."

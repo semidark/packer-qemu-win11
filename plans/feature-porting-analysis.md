@@ -519,6 +519,9 @@ reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpd
 | Disk Compaction | 2.7 | Simple | 40% smaller images |
 | Guest Agent Testing | 3.1 | Moderate | Automated verification |
 | Update Optimization Registry | 7.3 | Simple | Build reliability |
+| OpenSSH Server | 7.1 | Simple | Alternative remote access |
+| RDP Enablement | 7.2 | Simple | GUI access |
+| Windows Update Toggle Scripts | 2.1 | Simple | Runtime control of updates |
 
 ### Phase 2: Medium Priority - Enhanced Functionality
 
@@ -527,7 +530,6 @@ reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpd
 | First Login Bootstrap | 2.2 | Moderate | Cleaner provisioning |
 | Sysprep Shutdown | 6.1 | Moderate | Proper image generalization |
 | Firstboot Autounattend | 6.2 | Moderate | Post-sysprep configuration |
-| OpenSSH Server | 7.1 | Simple | Alternative remote access |
 | QEMU Launch Functions | 1.1 | Simple | Development workflow |
 | Sysprep Lock File | 3.2 | Moderate | Deployment verification |
 
@@ -537,7 +539,6 @@ reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpd
 |---------|---------|------------|--------|
 | WinRM HTTPS Script | 2.4 | Simple | Enhanced security |
 | .NET Compilation | 2.6 | Simple | Runtime performance |
-| RDP Enablement | 7.2 | Simple | GUI access |
 | Driver Certificate | 4.2 | Simple | Driver updates |
 | HEADLESS Mode | 1.3 | Simple | CI/CD flexibility |
 
@@ -554,14 +555,16 @@ graph TD
         A1[Windows Update Plugin] --> A2[Update Registry Keys]
         A3[QEMU Guest Agent] --> A4[Guest Agent Testing]
         A5[Disk Compaction]
+        A6[OpenSSH Server]
+        A7[RDP Enablement]
+        A8[Windows Update Toggle Scripts]
     end
     
     subgraph Phase2[Phase 2]
         B1[First Login Script] --> B2[Chocolatey Install]
         B2 --> B3[Sysprep Shutdown]
         B3 --> B4[Firstboot Autounattend]
-        B5[OpenSSH Server]
-        B6[Launch Functions]
+        B5[Launch Functions]
     end
     
     subgraph Phase3[Phase 3]
@@ -571,7 +574,7 @@ graph TD
     end
     
     A1 --> B1
-    A3 --> B6
+    A3 --> B5
 ```
 
 ---
@@ -625,8 +628,46 @@ graph TD
 
 The deprecated `packer-windows` codebase contains several valuable features that would significantly enhance the current `packer-qemu-win11` repository:
 
-1. **Most Impactful**: Windows Update provisioner, disk compaction, and QEMU Guest Agent testing
-2. **Best ROI**: Simple features like registry optimization and OpenSSH installation
+1. **Most Impactful**: Windows Update provisioner, disk compaction, QEMU Guest Agent testing, OpenSSH Server, RDP Enablement, and Windows Update Toggle Scripts
+2. **Best ROI**: Simple features like registry optimization, OpenSSH installation, RDP enablement, and Windows Update runtime control
 3. **Future-Proofing**: Multi-OS variant support pattern for expansion
 
-The current codebase has a solid foundation with proper UEFI/TPM/SecureBoot configuration. The recommended approach is to incrementally port features starting with Phase 1 high-priority items, which provide immediate value with relatively low complexity.
+Several Phase 2 and Phase 3 features have been implemented early to enhance the functionality and usability of the Windows 11 image. The current codebase has a solid foundation with proper UEFI/TPM/SecureBoot configuration. The recommended approach is to incrementally port features starting with Phase 1 high-priority items, which provide immediate value with relatively low complexity.
+
+## Current Status
+
+Several features have been implemented ahead of schedule during Phase 1 implementation, reflecting the current state of the project:
+
+### Implemented Features Moved from Later Phases
+
+1. **OpenSSH Server** (moved from Phase 2 to Phase 1)
+   - Installed during Windows 11 installation process via Autounattend.xml
+   - Located in the specialize pass of the unattend file
+   - Automatically configured to start on boot
+   - Firewall groups are automatically configured to allow SSH access
+
+2. **RDP Enablement** (moved from Phase 3 to Phase 1)
+   - Enabled during Windows 11 installation process via Autounattend.xml
+   - Located in the specialize pass of the unattend file
+   - Firewall groups are automatically configured to allow RDP access
+   - Configured to allow connections from any network profile
+
+3. **Windows Update Toggle Scripts** (moved from Phase 3 to Phase 1)
+   - A set of PowerShell scripts to provide runtime control over Windows Updates
+   - Allows users to enable or disable Windows Updates after the image has been built and deployed
+   - Scripts located in `scripts/windows-update/` and copied to `C:\Scripts\WindowsUpdate\` during the build process
+   - Includes three scripts:
+     - `Disable-WindowsUpdates.ps1` - Disables Windows Update services and sets blocking registry keys
+     - `Enable-WindowsUpdates.ps1` - Re-enables Windows Update and restores normal operation
+     - `Get-WindowsUpdateStatus.ps1` - Reports current Windows Update configuration state
+
+### Rationale for Moving Features
+
+These features were moved up to Phase 1 implementation for several reasons:
+
+1. **Immediate Value**: All three features provide significant value to users right away, enhancing the usability and functionality of the built images
+2. **Foundation for Other Features**: Having these features in place early makes it easier to develop and test other functionality
+3. **Security and Management**: Providing runtime control over Windows Updates and multiple access methods (SSH/RDP/WinRM) creates a more manageable and secure environment
+4. **Development Workflow**: Having multiple access methods improves the development and testing workflow
+
+This reflects the current state as of the Phase 1 implementation and shows how the project has evolved beyond the original roadmap.

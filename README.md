@@ -222,13 +222,88 @@ Quick verification methods:
 
 ## Security Notice
 
+**⚠️ WARNING: This image has significant security vulnerabilities and is for development/testing only.**
+
 This Vagrant box is configured for **development use only** with intentional security relaxations:
 - Default credentials: `vagrant/vagrant`
 - Unencrypted WinRM on port 5985
+- **RDP enabled by default on port 3389**
 - UAC disabled
 - Basic authentication enabled
 
+### RDP Security Risks
+
+RDP is enabled by default with known credentials, presenting serious security risks:
+- **Network exposure**: RDP on port 3389 is a common attack target
+- **Brute force attacks**: Automated attacks constantly scan for open RDP ports
+- **Known credentials**: The `vagrant/vagrant` credentials are publicly documented
+- **Vulnerability exploitation**: Unpatched RDP vulnerabilities provide system access
+
+### Securing RDP Access
+
+If you need to use this image beyond local development:
+
+1. **Change credentials immediately**: Replace the default `vagrant/vagrant` password
+2. **Enable Network Level Authentication (NLA)**: Reduces attack surface significantly
+3. **Use firewall rules**: Restrict RDP access to specific IP addresses or networks
+4. **Use VPN**: Access RDP through a VPN instead of exposing it to the internet
+5. **Implement account lockout**: Prevent brute force attacks with lockout policies
+6. **Keep Windows updated**: Ensure latest security patches are installed
+7. **Disable if not needed**: Turn off RDP if you don't require graphical access
+
+For complete security guidance, see the [Security Considerations](docs/PHASE1-IMPLEMENTATION.md#security-considerations) section in the Phase 1 documentation.
+
 **Do not use in production without proper hardening.**
+
+## Accessing the VM
+
+After building the Windows 11 image, you can launch it and access it through multiple methods:
+
+### Launch Options
+
+```bash
+# Launch with default settings (no display)
+./build.sh launch
+
+# Launch with VNC display support
+./build.sh launch --vnc
+
+# Launch with SPICE display support
+./build.sh launch --spice
+```
+
+### Connectivity Methods
+
+The launched VM provides several ways to connect:
+
+1. **RDP (Remote Desktop Protocol)**
+   - Port: 33389 (host) → 3389 (guest)
+   - Credentials: `vagrant` / `vagrant`
+   - Example: `xfreerdp /v:localhost:33389 /u:vagrant /p:vagrant`
+
+2. **SSH (Secure Shell)**
+   - Port: 2222 (host) → 22 (guest)
+   - Credentials: `vagrant` / `vagrant`
+   - Example: `ssh -p 2222 vagrant@localhost`
+
+3. **VNC (Virtual Network Computing)**
+   - Port: 5900 (host)
+   - Requires launch with `--vnc` flag
+   - Example: `vncviewer localhost:0`
+
+4. **SPICE (Simple Protocol for Independent Computing Environments)**
+   - Port: 5930 (host)
+   - Requires launch with `--spice` flag
+   - Example: `spicy -h localhost -p 5930`
+
+### Port Mapping Table
+
+| Host Port | Guest Port | Service     | Description                   |
+|-----------|------------|-------------|-------------------------------|
+| 33389     | 3389       | RDP         | Remote Desktop Protocol       |
+| 2222      | 22         | SSH         | Secure Shell                  |
+| 5900      | N/A        | VNC         | Virtual Network Computing     |
+| 5930      | N/A        | SPICE       | Display server protocol       |
 
 ## Known Issues and Resolutions
 

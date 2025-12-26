@@ -164,6 +164,12 @@ build {
   }
 
   provisioner "powershell" {
+    elevated_user     = "vagrant"
+    elevated_password = "vagrant"
+    script            = "./scripts/50-install-openssh.ps1"
+  }
+
+  provisioner "powershell" {
     scripts = ["./scripts/90-compact.ps1"]
   }
 

@@ -323,6 +323,33 @@
                     <CommandLine>%windir%\System32\WindowsPowerShell\v1.0\powershell.exe -Command "Set-LocalUser -Name 'vagrant' -PasswordNeverExpires $true"</CommandLine>
                     <Description>Disable password expiration for vagrant user</Description>
                 </SynchronousCommand>
+                <!-- Enable Remote Desktop -->
+                <SynchronousCommand wcm:action="add">
+                    <Order>18</Order>
+                    <CommandLine>powershell.exe -Command "Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name 'fDenyTSConnections' -Value 0"</CommandLine>
+                    <Description>Enable Remote Desktop</Description>
+                </SynchronousCommand>
+                
+                <!-- Enable Network Level Authentication for RDP -->
+                <SynchronousCommand wcm:action="add">
+                    <Order>19</Order>
+                    <CommandLine>powershell.exe -Command "Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name 'UserAuthentication' -Value 1"</CommandLine>
+                    <Description>Enable NLA for RDP</Description>
+                </SynchronousCommand>
+                
+                <!-- Enable Remote Desktop firewall rules -->
+                <SynchronousCommand wcm:action="add">
+                    <Order>20</Order>
+                    <CommandLine>powershell.exe -Command "Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'"</CommandLine>
+                    <Description>Enable RDP Firewall Rules</Description>
+                </SynchronousCommand>
+                
+                <!-- Add vagrant user to Remote Desktop Users group -->
+                <SynchronousCommand wcm:action="add">
+                    <Order>21</Order>
+                    <CommandLine>powershell.exe -Command "Add-LocalGroupMember -Group 'Remote Desktop Users' -Member 'vagrant' -ErrorAction SilentlyContinue"</CommandLine>
+                    <Description>Add vagrant to Remote Desktop Users</Description>
+                </SynchronousCommand>
             </FirstLogonCommands>
         </component>
         <component name="Microsoft-Windows-WinRE-RecoveryAgent" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -346,6 +373,11 @@
                 <FirewallGroup wcm:action="add" wcm:keyValue="RemoteAdministration">
                     <Active>true</Active>
                     <Group>Remote Administration</Group>
+                    <Profile>all</Profile>
+                </FirewallGroup>
+                <FirewallGroup wcm:action="add" wcm:keyValue="RemoteDesktop">
+                    <Active>true</Active>
+                    <Group>Remote Desktop</Group>
                     <Profile>all</Profile>
                 </FirewallGroup>
             </FirewallGroups>
