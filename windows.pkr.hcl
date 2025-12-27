@@ -170,6 +170,16 @@ build {
   }
 
   provisioner "powershell" {
+    scripts = ["./scripts/80-misc-software.ps1"]
+  }
+
+  # Copy Win11Debloat submodule to the VM
+  provisioner "file" {
+    source      = "./scripts/Win11Debloat/"
+    destination = "C:/Scripts/Win11Debloat/"
+  }
+
+  provisioner "powershell" {
     scripts = ["./scripts/90-compact.ps1"]
   }
 

@@ -1,0 +1,3 @@
+[submodule "scripts/Win11Debloat"]
+	path = scripts/Win11Debloat
+	url = https://github.com/Raphire/Win11Debloat.git

@@ -41,6 +41,36 @@ sudo apt install packer
 
 Place the virtio-win.iso file at `~/.local/share/libvirt/images/virtio-win.iso`
 
+## Git Submodules
+
+This project uses Git submodules to manage external dependencies. Currently, the Win11Debloat script is included as a submodule.
+
+### Cloning the Repository with Submodules
+
+To properly clone this repository and initialize all submodules, use one of the following methods:
+
+1. **Initial clone with submodules**:
+   ```bash
+   git clone --recurse-submodules <repository-url>
+   ```
+
+2. **If already cloned without submodules**:
+   ```bash
+   git submodule init && git submodule update
+   ```
+
+### Updating Submodules
+
+To update submodules to their latest upstream versions:
+
+```bash
+git submodule update --remote scripts/Win11Debloat
+```
+
+### What the Submodule Contains
+
+The Win11Debloat submodule contains scripts for removing pre-installed apps and disabling telemetry in Windows 11. It is used during the compact phase of the build process to customize and declutter the Windows experience.
+
 ## Implementation Details
 
 ### Packer Configuration

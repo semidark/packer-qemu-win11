@@ -18,11 +18,25 @@ try {
     Write-Log "Stopping Windows Update service..."
     Stop-Service wuauserv -Force
 
+    # Run debloat Script
+    Write-Log "Running Win11Debloat script..."
+    
+    # Define path to the Win11Debloat script in the submodule
+    $debloatScriptPath = "C:\Scripts\Win11Debloat\Win11Debloat.ps1"
+    
+    # Check if the debloat script exists
+    if (Test-Path $debloatScriptPath) {
+        # Run the debloat script with default settings
+        & $debloatScriptPath -RunDefaults -Silent
+    } else {
+        Write-Warning "Win11Debloat script not found at $debloatScriptPath. Skipping debloat step."
+    }
+
     # Clean SoftwareDistribution\Download folder
     Write-Log "Cleaning SoftwareDistribution\Download folder..."
     $downloadFolder = "C:\Windows\SoftwareDistribution\Download"
     if (Test-Path $downloadFolder) {
-        # Use robocopy to clean the folder which handles long paths better
+        # Use robocopy to clean the folder
         Write-Log "Using robocopy method to clean folder (handles long paths)..."
         $tempEmptyDir = "$env:TEMP\EmptyDirForCleanup"
         if (-not (Test-Path $tempEmptyDir)) {

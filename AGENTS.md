@@ -187,6 +187,20 @@ print(result.std_out.decode('utf-8'))
 - [`scripts/70-install-qemu-ga.ps1`](scripts/70-install-qemu-ga.ps1) - Installs QEMU Guest Agent for VM management and testing
 - [`scripts/90-compact.ps1`](scripts/90-compact.ps1) - Disk compaction script that cleans up system files and zeros free space to reduce image size
 
+## Win11Debloat Configuration
+
+The Win11Debloat script is now managed as a Git submodule at `scripts/Win11Debloat/` and is called during the compact phase with `-RunDefaults -Silent` parameters. This script removes pre-installed apps, disables telemetry, and performs various other changes to customize and declutter the Windows experience.
+
+### Usage with Git Submodule
+
+To initialize and update the Win11Debloat submodule:
+
+- Initial clone with submodules: `git clone --recurse-submodules`
+- Updating the submodule: `git submodule update --remote scripts/Win11Debloat`
+- Initializing submodules after clone: `git submodule init && git submodule update`
+
+The upstream repository is located at [https://github.com/Raphire/Win11Debloat](https://github.com/Raphire/Win11Debloat).
+
 ## File Patterns
 - `os_pkrvars/*.pkrvars.hcl` - Add new OS variants here
 - `answer_files/*/Autounattend.xml` - Windows unattended configs with XML namespaces
