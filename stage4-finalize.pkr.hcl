@@ -220,7 +220,7 @@ build {
       "    \"scripts/windows-update/Enable-WindowsUpdates.ps1\",",
       "    \"scripts/windows-update/Get-WindowsUpdateStatus.ps1\",",
       "    \"scripts/90-compact.ps1\"",
-      "  ),",
+      "  )",
       "  metadata     = @{",
       "    memory = ${var.memory}",
       "    cores  = ${var.cores}",

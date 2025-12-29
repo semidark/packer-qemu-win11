@@ -195,7 +195,9 @@ build {
 
   # Install and configure OpenSSH Server
   provisioner "powershell" {
-    script = "./scripts/50-install-openssh.ps1"
+    elevated_user     = "vagrant"
+    elevated_password = "vagrant"
+    script            = "./scripts/50-install-openssh.ps1"
   }
 
   # Copy Chocolatey packages JSON file to the VM
@@ -225,7 +227,7 @@ build {
       "    \"scripts/70-install-qemu-ga.ps1\",",
       "    \"scripts/50-install-openssh.ps1\",",
       "    \"scripts/60-install-chocolatey-packages.ps1\"",
-      "  ),",
+      "  )",
       "  metadata     = @{",
       "    memory = ${var.memory}",
       "    cores  = ${var.cores}",
