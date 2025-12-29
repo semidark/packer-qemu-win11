@@ -4,3 +4,4 @@ output-*/
 tmp/
 packer_cache/
 inspiration/
+logs/
