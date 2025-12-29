@@ -125,8 +125,13 @@ The enhanced build workflow now includes the following stages:
 ## Performance Metrics
 
 ### Build Time
-- **Before Phase 1**: ~30-45 minutes
-- **After Phase 1**: ~3-4 hours (due to Windows Update provisioner)
+- **Before Phase 1**: ~30-45 minutes (single stage)
+- **After Phase 1**: ~3-4 hours for full build with updates (due to Windows Update provisioner in Stage 2)
+
+With the new multi-stage build pipeline, iterative development is significantly faster:
+- **Software changes only**: ~30 minutes (Stage 3 only)
+- **Final tweaks only**: ~10 minutes (Stage 4 only)
+- **Development builds (skip updates)**: ~1 hour (Stages 1, 3, and 4 only)
 
 The significant increase in build time is expected and justified by the security and stability benefits of having current system updates.
 
@@ -134,7 +139,7 @@ The significant increase in build time is expected and justified by the security
 - **Before Phase 1**: ~12-15GB
 - **After Phase 1**: ~8-9GB (reduction of ~40%)
 
-The disk compaction script delivers substantial storage savings while maintaining full functionality.
+The disk compaction script in Stage 4 delivers substantial storage savings while maintaining full functionality. This benefit is maintained in the multi-stage build pipeline.
 
 ## Testing Instructions
 

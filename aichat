@@ -1,0 +1,921 @@
+2025/12/27 15:24:45 [INFO] Packer version: 1.14.3 [go1.24.0 linux amd64]
+2025/12/27 15:24:45 Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/12/27 15:24:45 [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 [WARN] Config file doesn't exist: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 [INFO] Setting cache directory: /home/thomaier/.cache/packer
+2025/12/27 15:24:45 Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 [TRACE] listing potential installations for "github.com/rgl/windows-update" that match "0.16.8". plugingetter.ListInstallationsOptions{PluginDirectory:"/home/thomaier/.config/packer/plugins", BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"linux", ARCH:"amd64", Ext:"", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.Digest)(0xc0000a0700)}}, ReleasesOnly:false}}
+2025/12/27 15:24:45 [TRACE] version "v0.15.0" of file "/home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.15.0_x5.0_linux_amd64" does not match constraint "0.16.8"
+2025/12/27 15:24:45 [TRACE] Found the following "github.com/rgl/windows-update" installations: [{/home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 v0.16.8 x5.0}]
+2025/12/27 15:24:45 found external [-packer-default-plugin-name-] provisioner from windows-update plugin
+2025/12/27 15:24:45 plugin "/home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64" does not support Protobuf, forcing use of Gob
+2025/12/27 15:24:45 [TRACE] listing potential installations for "github.com/hashicorp/qemu" that match ">= 1.0.7". plugingetter.ListInstallationsOptions{PluginDirectory:"/home/thomaier/.config/packer/plugins", BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"linux", ARCH:"amd64", Ext:"", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.Digest)(0xc0000a0700)}}, ReleasesOnly:false}}
+2025/12/27 15:24:45 [TRACE] Found the following "github.com/hashicorp/qemu" installations: [{/home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 v1.1.4 x5.0}]
+2025/12/27 15:24:45 [INFO] found external [-packer-default-plugin-name-] builders from qemu plugin
+2025/12/27 15:24:45 [TRACE] listing potential installations for <nil> that match "". plugingetter.ListInstallationsOptions{PluginDirectory:"/home/thomaier/.config/packer/plugins", BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"linux", ARCH:"amd64", Ext:"", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.Digest)(0xc000712100)}}, ReleasesOnly:false}}
+2025/12/27 15:24:45 [INFO] found external [-packer-default-plugin-name-] builders from qemu plugin
+2025/12/27 15:24:45 [INFO] found external [-packer-default-plugin-name-] builders from vagrant plugin
+2025/12/27 15:24:45 [INFO] found external [-packer-default-plugin-name- cloud registry] post-processors from vagrant plugin
+2025/12/27 15:24:45 found external [-packer-default-plugin-name-] provisioner from windows-update plugin
+2025/12/27 15:24:45 [TRACE] validateValue: not active for efi_boot, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for output_directory, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for vm_name, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for headless, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for cores, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for machine_type, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for source_disk, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for cpu_model, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for vga, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for os_name, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for efi_firmware_vars, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for local_libvirt_images, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for iso_checksum, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for disk_size, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for install_updates, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for winrm_username, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for winrm_password, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for os_version, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for os_arch, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for efi_firmware_code, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for memory, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for disk_interface, so skipping
+2025/12/27 15:24:45 [TRACE] validateValue: not active for disk_discard, so skipping
+2025/12/27 15:24:45 [INFO] Starting external plugin /home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 start builder -packer-default-plugin-name-
+2025/12/27 15:24:45 Starting plugin: /home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 []string{"/home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64", "start", "builder", "-packer-default-plugin-name-"}
+2025/12/27 15:24:45 Waiting for RPC address for: /home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin2261214813
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Waiting for connection...
+2025/12/27 15:24:45 Received unix RPC address for /home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin2261214813
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Serving a plugin connection...
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 [TRACE] starting builder -packer-default-plugin-name-
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 use detected accelerator: kvm
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [INFO] Starting external plugin /home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 start provisioner -packer-default-plugin-name-
+2025/12/27 15:24:45 Starting plugin: /home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 []string{"/home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64", "start", "provisioner", "-packer-default-plugin-name-"}
+2025/12/27 15:24:45 Waiting for RPC address for: /home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64
+2025/12/27 15:24:45 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Starting packer-plugin-windows-update (version 0.16.8; commit f75bd003f3b824f443caebd891363851429ec496; date 2024-09-07T06:17:41Z)
+2025/12/27 15:24:45 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin2381210808
+2025/12/27 15:24:45 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Waiting for connection...
+2025/12/27 15:24:45 Received unix RPC address for /home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin2381210808
+2025/12/27 15:24:45 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Serving a plugin connection...
+2025/12/27 15:24:45 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 [TRACE] starting provisioner -packer-default-plugin-name-
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [INFO] Starting external plugin /usr/bin/packer execute packer-provisioner-file
+2025/12/27 15:24:45 Starting plugin: /usr/bin/packer []string{"/usr/bin/packer", "execute", "packer-provisioner-file"}
+2025/12/27 15:24:45 Waiting for RPC address for: /usr/bin/packer
+2025/12/27 15:24:45 packer-provisioner-file plugin: [INFO] Packer version: 1.14.3 [go1.24.0 linux amd64]
+2025/12/27 15:24:45 packer-provisioner-file plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-file plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/12/27 15:24:45 packer-provisioner-file plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-file plugin: [WARN] Config file doesn't exist: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-file plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-file plugin: [INFO] Setting cache directory: /home/thomaier/.cache/packer
+2025/12/27 15:24:45 packer-provisioner-file plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-file plugin: Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin3727275632
+2025/12/27 15:24:45 packer-provisioner-file plugin: Waiting for connection...
+2025/12/27 15:24:45 Received unix RPC address for /usr/bin/packer: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin3727275632
+2025/12/27 15:24:45 packer-provisioner-file plugin: Serving a plugin connection...
+2025/12/27 15:24:45 packer-provisioner-file plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 packer-provisioner-file plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [INFO] Starting external plugin /usr/bin/packer execute packer-provisioner-powershell
+2025/12/27 15:24:45 Starting plugin: /usr/bin/packer []string{"/usr/bin/packer", "execute", "packer-provisioner-powershell"}
+2025/12/27 15:24:45 Waiting for RPC address for: /usr/bin/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Packer version: 1.14.3 [go1.24.0 linux amd64]
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [WARN] Config file doesn't exist: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Setting cache directory: /home/thomaier/.cache/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin3753443620
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Waiting for connection...
+2025/12/27 15:24:45 Received unix RPC address for /usr/bin/packer: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin3753443620
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Serving a plugin connection...
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using script default execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using script default elevated execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [INFO] Starting external plugin /usr/bin/packer execute packer-provisioner-powershell
+2025/12/27 15:24:45 Starting plugin: /usr/bin/packer []string{"/usr/bin/packer", "execute", "packer-provisioner-powershell"}
+2025/12/27 15:24:45 Waiting for RPC address for: /usr/bin/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Packer version: 1.14.3 [go1.24.0 linux amd64]
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [WARN] Config file doesn't exist: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Setting cache directory: /home/thomaier/.cache/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin3610536155
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Waiting for connection...
+2025/12/27 15:24:45 Received unix RPC address for /usr/bin/packer: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin3610536155
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Serving a plugin connection...
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using script default execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using script default elevated execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [INFO] Starting external plugin /usr/bin/packer execute packer-provisioner-powershell
+2025/12/27 15:24:45 Starting plugin: /usr/bin/packer []string{"/usr/bin/packer", "execute", "packer-provisioner-powershell"}
+2025/12/27 15:24:45 Waiting for RPC address for: /usr/bin/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Packer version: 1.14.3 [go1.24.0 linux amd64]
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [WARN] Config file doesn't exist: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Setting cache directory: /home/thomaier/.cache/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin54510258
+2025/12/27 15:24:45 Received unix RPC address for /usr/bin/packer: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin54510258
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Waiting for connection...
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Serving a plugin connection...
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using script default execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using script default elevated execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 [INFO] Starting external plugin /usr/bin/packer execute packer-provisioner-powershell
+2025/12/27 15:24:45 Starting plugin: /usr/bin/packer []string{"/usr/bin/packer", "execute", "packer-provisioner-powershell"}
+2025/12/27 15:24:45 Waiting for RPC address for: /usr/bin/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Packer version: 1.14.3 [go1.24.0 linux amd64]
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] PACKER_CONFIG env var set; attempting to open config file: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [WARN] Config file doesn't exist: /home/thomaier/.packerconfig
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [INFO] Setting cache directory: /home/thomaier/.cache/packer
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Detected xdg config directory from env var: /home/thomaier/.config
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Plugin address: unix /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin169877746
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Waiting for connection...
+2025/12/27 15:24:45 Received unix RPC address for /usr/bin/packer: addr is /home/thomaier/src/packer-qemu-win11/tmp/packer-plugin169877746
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Serving a plugin connection...
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using inline default execute command powershell -executionpolicy bypass -file {{.Path}}
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: Using inline default elevated execute command powershell -executionpolicy bypass -file {{.Path}}
+2025/12/27 15:24:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 15:24:45 [DEBUG] - common: receiving ConfigSpec as gob
+a checksum is highly recommended.
+
+  on stage2-updates.pkr.hcl line 133:
+  (source code not available)
+
+2025/12/27 15:24:45 Build debug mode: false
+2025/12/27 15:24:45 Force build: false
+2025/12/27 15:24:45 On error: 
+2025/12/27 15:24:45 Waiting on builds to complete...
+2025/12/27 15:24:45 Starting build run: qemu.stage2
+Warning: A checksum of 'none' was specified. Since ISO files are so big,
+2025/12/27 15:24:45 Running builder: qemu
+2025/12/27 15:24:45 [INFO] (telemetry) Starting builder qemu.stage2
+a checksum is highly recommended.
+
+  on stage2-updates.pkr.hcl line 133:
+  (source code not available)
+
+
+[1;32mqemu.stage2: output will be in this color.[0m
+
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Qemu path: /usr/bin/qemu-system-x86_64, Qemu Image path: /usr/bin/qemu-img
+[1;32m==> qemu.stage2: Retrieving ISO[0m
+[1;32m==> qemu.stage2: Trying output-stage1/stage1-base[0m
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Acquiring lock for: output-stage1/stage1-base (/home/thomaier/.cache/packer/5398186e7e1fdc3cdc634e887669feaf650288a9.iso.lock)
+[1;32m==> qemu.stage2: Trying output-stage1/stage1-base[0m
+[1;32m==> qemu.stage2: output-stage1/stage1-base => /home/thomaier/src/packer-qemu-win11/output-stage1/stage1-base[0m
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Leaving retrieve loop for ISO
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Executing swtpm: [socket --tpmstate dir=/home/thomaier/src/packer-qemu-win11/tmp/587856258 --ctrl type=unixio,path=/home/thomaier/src/packer-qemu-win11/tmp/587856258/vtpm.sock --tpm2]
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 No floppy files specified. Floppy disk will not be made.
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 No CD files specified. CD disk will not be made.
+2025/12/27 15:24:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:45 Executing qemu-img: []string{"convert", "-O", "qcow2", "/home/thomaier/src/packer-qemu-win11/output-stage1/stage1-base", "output-stage2/stage2-updated"}
+[1;32m==> qemu.stage2: Copying hard drive...[0m
+[1;32m==> qemu.stage2: Resizing hard drive...[0m
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 stdout:
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 stderr:
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Executing qemu-img: []string{"resize", "-f", "qcow2", "output-stage2/stage2-updated", "60G"}
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 stdout: Image resized.
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 stderr:
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Looking for available communicator (SSH, WinRM, etc) port between 2222 and 4444
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Found available port: 2708 on IP: 127.0.0.1
+[1;32m==> qemu.stage2: Found port for communicator (SSH, WinRM, etc): 2708.[0m
+[1;32m==> qemu.stage2: Looking for available port between 5900 and 6000 on 127.0.0.1[0m
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Looking for available port between 5900 and 6000 on 127.0.0.1
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Found available port: 5905 on IP: 127.0.0.1
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Found available VNC port: 5905 on IP: 127.0.0.1
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Qemu --version output: QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.11)
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Qemu version: 8.2.2
+[1;32m==> qemu.stage2: Starting VM, booting disk image[0m
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 CPU count at default value, setting to topology maximum: 2
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Qemu Builder has no floppy files, not attaching a floppy.
+[1;32m==> qemu.stage2: Overriding default Qemu arguments with qemuargs template option...[0m
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Executing /usr/bin/qemu-system-x86_64: []string{"-netdev", "user,id=user.0,hostfwd=tcp::2708-:5985", "-cpu", "host", "-m", "4096M", "-display", "gtk", "-drive", "if=pflash,unit=0,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd,format=raw,readonly=on", "-drive", "if=pflash,unit=1,file=output-stage2/efivars.fd,format=raw", "-drive", "if=none,id=drive0,file=output-stage2/stage2-updated,format=qcow2,cache=writeback,discard=unmap", "-drive", "media=cdrom,file=/home/thomaier/.local/share/libvirt/images/virtio-win.iso", "-device", "virtio-scsi-pci,id=scsi0", "-device", "scsi-hd,bus=scsi0.0,drive=drive0", "-device", "virtio-net,netdev=user.0", "-name", "stage2-updated", "-vnc", "127.0.0.1:5", "-smp", "2,cores=2", "-machine", "type=q35,accel=kvm", "-chardev", "socket,id=vtpm,path=/home/thomaier/src/packer-qemu-win11/tmp/587856258/vtpm.sock", "-tpmdev", "emulator,id=tpm0,chardev=vtpm", "-vga", "qxl"}
+2025/12/27 15:24:52 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:52 Started Qemu. Pid: 872941
+[1;32m==> qemu.stage2: Waiting 1s for boot...[0m
+[1;32m==> qemu.stage2: Connecting to VM via VNC (127.0.0.1:5905)[0m
+2025/12/27 15:24:55 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:55 Connected to VNC desktop: QEMU (stage2-updated)
+[1;32m==> qemu.stage2: Typing the boot commands over VNC...[0m
+2025/12/27 15:24:55 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:55 Special code '<enter>' found, replacing with: 0xFF0D
+[1;32m==> qemu.stage2: Not using a NetBridge -- skipping StepWaitGuestAddress[0m
+[1;32m==> qemu.stage2: Using WinRM communicator to connect: 127.0.0.1[0m
+2025/12/27 15:24:55 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:55 Waiting for WinRM, up to timeout: 1h30m0s
+2025/12/27 15:24:55 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:55 [INFO] Attempting WinRM connection...
+2025/12/27 15:24:55 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:24:55 [DEBUG] connecting to remote shell using WinRM
+[1;32m==> qemu.stage2: Waiting for WinRM to become available...[0m
+2025/12/27 15:25:31 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:31 Checking that WinRM is connected with: 'powershell.exe -EncodedCommand JABQAHIAbwBnAHIAZQBzAHMAUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAJwA7AGkAZgAgACgAVABlAHMAdAAtAFAAYQB0AGgAIAB2AGEAcgBpAGEAYgBsAGUAOgBnAGwAbwBiAGEAbAA6AFAAcgBvAGcAcgBlAHMAcwBQAHIAZQBmAGUAcgBlAG4AYwBlACkAewAkAFAAcgBvAGcAcgBlAHMAcwBQAHIAZQBmAGUAcgBlAG4AYwBlAD0AJwBTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACcAfQA7ACAAZQBjAGgAbwAgACIAVwBpAG4AUgBNACAAYwBvAG4AbgBlAGMAdABlAGQALgAiAA=='
+2025/12/27 15:25:31 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:31 [INFO] starting remote command: powershell.exe -EncodedCommand JABQAHIAbwBnAHIAZQBzAHMAUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAJwA7AGkAZgAgACgAVABlAHMAdAAtAFAAYQB0AGgAIAB2AGEAcgBpAGEAYgBsAGUAOgBnAGwAbwBiAGEAbAA6AFAAcgBvAGcAcgBlAHMAcwBQAHIAZQBmAGUAcgBlAG4AYwBlACkAewAkAFAAcgBvAGcAcgBlAHMAcwBQAHIAZQBmAGUAcgBlAG4AYwBlAD0AJwBTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACcAfQA7ACAAZQBjAGgAbwAgACIAVwBpAG4AUgBNACAAYwBvAG4AbgBlAGMAdABlAGQALgAiAA==
+[1;32m==> qemu.stage2: WinRM connected.[0m
+2025/12/27 15:25:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:35 [INFO] command 'powershell.exe -EncodedCommand JABQAHIAbwBnAHIAZQBzAHMAUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAJwA7AGkAZgAgACgAVABlAHMAdAAtAFAAYQB0AGgAIAB2AGEAcgBpAGEAYgBsAGUAOgBnAGwAbwBiAGEAbAA6AFAAcgBvAGcAcgBlAHMAcwBQAHIAZQBmAGUAcgBlAG4AYwBlACkAewAkAFAAcgBvAGcAcgBlAHMAcwBQAHIAZQBmAGUAcgBlAG4AYwBlAD0AJwBTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACcAfQA7ACAAZQBjAGgAbwAgACIAVwBpAG4AUgBNACAAYwBvAG4AbgBlAGMAdABlAGQALgAiAA==' exited with code: 0
+2025/12/27 15:25:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:35 Connected to machine
+[1;32m==> qemu.stage2: Connected to WinRM![0m
+2025/12/27 15:25:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:35 Running the provision hook
+2025/12/27 15:25:35 [INFO] (telemetry) Starting provisioner windows-update
+2025/12/27 15:25:35 [DEBUG] - common: receiving ConfigSpec as gob
+[1;32m==> qemu.stage2: Uploading the Windows update elevated script...[0m
+2025/12/27 15:25:35 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:25:35 [INFO] 4426 bytes written for 'uploadData'
+2025/12/27 15:25:35 [INFO] 4426 bytes written for 'uploadData'
+2025/12/27 15:25:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:35 Uploading file to 'C:/Windows/Temp/packer-windows-update-elevated.ps1'
+[1;32m==> qemu.stage2: Uploading the Windows update check for reboot required elevated script...[0m
+2025/12/27 15:25:41 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:25:41 [INFO] 4247 bytes written for 'uploadData'
+2025/12/27 15:25:41 [INFO] 4247 bytes written for 'uploadData'
+2025/12/27 15:25:41 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:41 Uploading file to 'C:/Windows/Temp/packer-windows-update-pending-reboot-elevated.ps1'
+[1;32m==> qemu.stage2: Uploading the Windows update script...[0m
+2025/12/27 15:25:47 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:25:47 [INFO] 12519 bytes written for 'uploadData'
+2025/12/27 15:25:47 [INFO] 12519 bytes written for 'uploadData'
+2025/12/27 15:25:47 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:47 Uploading file to 'C:/Windows/Temp/packer-windows-update.ps1'
+[1;32m==> qemu.stage2: Running Windows update...[0m
+2025/12/27 15:25:54 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:25:54 [INFO] starting remote command: PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-elevated.ps1
+[1;32m==> qemu.stage2: Searching for Windows updates...[0m
+[1;32m==> qemu.stage2: Found Windows update (2025-10-14; 18.18 MB): Update for Windows Security platform - KB5007651 (Version 10.0.29429.1000)[0m
+[1;32m==> qemu.stage2: Found Windows update (2025-12-09; 80.41 MB): Windows Malicious Software Removal Tool x64 - v5.138 (KB890830)[0m
+[1;32m==> qemu.stage2: Found Windows update (2025-12-27; 204.94 MB): Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.443.360.0) - Current Channel (Broad)[0m
+[1;32m==> qemu.stage2: Found Windows update (2025-10-14; 143.02 MB): 2025-10 Cumulative Update for .NET Framework 3.5 and 4.8.1 for Windows 11, version 24H2 for x64 (KB5066131)[0m
+[1;32m==> qemu.stage2: Found Windows update (2025-12-09; 91171.72 MB): 2025-12 Security Update (KB5072033) (26100.7462)[0m
+[1;32m==> qemu.stage2: Downloading Windows updates (5 updates; 91618.28 MB)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 84% cpu; 57% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 77% cpu; 59% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 29% cpu; 58% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 100% cpu; 63% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 44% cpu; 70% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 46% cpu; 78% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 52% cpu; 70% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 48% cpu; 65% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 53% cpu; 64% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 43% cpu; 65% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 44% cpu; 65% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 96% cpu; 66% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 69% cpu; 61% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 94% cpu; 59% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 60% cpu; 60% memory)...[0m
+[1;32m==> qemu.stage2: Installing Windows updates...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 70% cpu; 56% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 100% cpu; 61% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 68% cpu; 61% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 68% cpu; 55% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 61% cpu; 58% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 91% cpu; 71% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 50% cpu; 69% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 63% cpu; 52% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 26% cpu; 55% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 51% cpu; 78% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 99% cpu; 61% memory)...[0m
+[1;32m==> qemu.stage2: Waiting for the Windows Modules Installer to exit...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 7% cpu; 57% memory)...[0m
+2025/12/27 15:54:16 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] command 'PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-elevated.ps1' exited with code: 101
+2025/12/27 15:54:16 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] RPC endpoint: Communicator ended with: 101
+2025/12/27 15:54:16 [INFO] 2990 bytes written for 'stdout'
+2025/12/27 15:54:16 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:54:16 [INFO] RPC client: Communicator ended with: 101
+2025/12/27 15:54:16 [INFO] RPC endpoint: Communicator ended with: 101
+2025/12/27 15:54:16 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:54:16 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] 2990 bytes written for 'stdout'
+2025/12/27 15:54:16 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] RPC client: Communicator ended with: 101
+[1;32m==> qemu.stage2: Restarting the machine...[0m
+2025/12/27 15:54:16 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] starting remote command: shutdown.exe -f -r -t 0 -c "packer restart"
+2025/12/27 15:54:16 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] command 'shutdown.exe -f -r -t 0 -c "packer restart"' exited with code: 0
+2025/12/27 15:54:16 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 15:54:16 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:54:16 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:54:16 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 15:54:16 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 15:54:16 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:54:16 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:54:16 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:16 [INFO] RPC client: Communicator ended with: 0
+[1;32m==> qemu.stage2: Waiting for machine to become available...[0m
+2025/12/27 15:54:17 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 [INFO] starting remote command: shutdown.exe -f -r -t 60 -c "packer restart test"
+2025/12/27 15:54:17 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 [INFO] command 'shutdown.exe -f -r -t 60 -c "packer restart test"' exited with code: 1115
+2025/12/27 15:54:17 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 [INFO] RPC endpoint: Communicator ended with: 1115
+2025/12/27 15:54:17 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:54:17 [INFO] 40 bytes written for 'stderr'
+2025/12/27 15:54:17 [INFO] RPC client: Communicator ended with: 1115
+2025/12/27 15:54:17 [INFO] RPC endpoint: Communicator ended with: 1115
+2025/12/27 15:54:17 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:54:17 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 [INFO] 40 bytes written for 'stderr'
+2025/12/27 15:54:17 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 [INFO] RPC client: Communicator ended with: 1115
+[1;31m==> qemu.stage2: A system shutdown is in progress.(1115)[0m
+2025/12/27 15:54:17 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:17 Retryable error: Machine not yet available (exit status 1115)
+2025/12/27 15:54:22 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 [INFO] starting remote command: shutdown.exe -f -r -t 60 -c "packer restart test"
+2025/12/27 15:54:22 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 [INFO] command 'shutdown.exe -f -r -t 60 -c "packer restart test"' exited with code: 1115
+2025/12/27 15:54:22 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 [INFO] RPC endpoint: Communicator ended with: 1115
+2025/12/27 15:54:22 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:54:22 [INFO] 40 bytes written for 'stderr'
+2025/12/27 15:54:22 [INFO] RPC client: Communicator ended with: 1115
+2025/12/27 15:54:22 [INFO] RPC endpoint: Communicator ended with: 1115
+2025/12/27 15:54:22 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:54:22 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 [INFO] 40 bytes written for 'stderr'
+[1;31m==> qemu.stage2: A system shutdown is in progress.(1115)[0m
+2025/12/27 15:54:22 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 [INFO] RPC client: Communicator ended with: 1115
+2025/12/27 15:54:22 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:54:22 Retryable error: Machine not yet available (exit status 1115)
+2025/12/27 15:57:19 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:57:19 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:57:19 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:19 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:57:19 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:19 Retryable error: unknown error Post "http://127.0.0.1:2708/wsman": EOF
+2025/12/27 15:57:19 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:19 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] starting remote command: shutdown.exe -f -r -t 60 -c "packer restart test"
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] command 'shutdown.exe -f -r -t 60 -c "packer restart test"' exited with code: 0
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 15:57:43 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:57:43 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:57:43 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 15:57:43 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 15:57:43 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:57:43 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:57:43 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] starting remote command: shutdown.exe -a
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] command 'shutdown.exe -a' exited with code: 0
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 15:57:43 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:57:43 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:57:43 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 15:57:43 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 15:57:43 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:57:43 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:57:43 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] RPC client: Communicator ended with: 0
+[1;32m==> qemu.stage2: Checking for pending restart...[0m
+2025/12/27 15:57:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:57:43 [INFO] starting remote command: PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-pending-reboot-elevated.ps1
+[1;32m==> qemu.stage2: Waiting for the Windows Modules Installer to exit...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 65% cpu; 37% memory)...[0m
+2025/12/27 15:59:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:59:35 [INFO] command 'PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-pending-reboot-elevated.ps1' exited with code: 16001
+2025/12/27 15:59:35 [INFO] 134 bytes written for 'stdout'
+2025/12/27 15:59:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:59:35 [INFO] RPC endpoint: Communicator ended with: 16001
+2025/12/27 15:59:35 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:59:35 [INFO] RPC client: Communicator ended with: 16001
+2025/12/27 15:59:35 [INFO] RPC endpoint: Communicator ended with: 16001
+2025/12/27 15:59:35 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:35 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:59:35 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:35 [INFO] 134 bytes written for 'stdout'
+2025/12/27 15:59:35 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:35 [INFO] RPC client: Communicator ended with: 16001
+2025/12/27 15:59:35 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:35 Retryable error: Machine not yet available (exit status 16001)
+2025/12/27 15:59:46 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:59:46 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:59:46 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:46 [INFO] 0 bytes written for 'stdout'
+2025/12/27 15:59:46 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:46 [INFO] 0 bytes written for 'stderr'
+2025/12/27 15:59:46 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 15:59:46 Retryable error: unknown error Post "http://127.0.0.1:2708/wsman": read tcp 127.0.0.1:36380->127.0.0.1:2708: read: connection reset by peer
+2025/12/27 15:59:51 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 15:59:51 [INFO] starting remote command: PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-pending-reboot-elevated.ps1
+2025/12/27 16:00:09 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:00:09 [INFO] command 'PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-pending-reboot-elevated.ps1' exited with code: 0
+2025/12/27 16:00:09 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:00:09 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:00:09 [INFO] 28 bytes written for 'stdout'
+2025/12/27 16:00:09 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:00:09 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:00:09 [INFO] RPC endpoint: Communicator ended with: 0
+[1;32m==> qemu.stage2: VAGRANT-6JFNEV6 restarted.[0m
+2025/12/27 16:00:09 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 16:00:09 [INFO] 28 bytes written for 'stdout'
+2025/12/27 16:00:09 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 16:00:09 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:00:09 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 16:00:09 [INFO] RPC client: Communicator ended with: 0
+[1;32m==> qemu.stage2: Restart complete[0m
+[1;32m==> qemu.stage2: Running Windows update...[0m
+2025/12/27 16:00:09 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:00:09 [INFO] starting remote command: PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-elevated.ps1
+[1;32m==> qemu.stage2: Searching for Windows updates...[0m
+[1;32m==> qemu.stage2: Found Windows update (2025-12-17; 18.6 MB): Update for Microsoft Defender Antivirus antimalware platform - KB4052623 (Version 4.18.25110.6) - Current Channel (Broad)[0m
+[1;32m==> qemu.stage2: Downloading Windows updates (1 updates; 18.6 MB)...[0m
+[1;32m==> qemu.stage2: Installing Windows updates...[0m
+[1;32m==> qemu.stage2: Waiting for operation to complete (system performance: 85% cpu; 64% memory)...[0m
+2025/12/27 16:01:46 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:01:46 [INFO] command 'PowerShell -ExecutionPolicy Bypass -OutputFormat Text -File C:/Windows/Temp/packer-windows-update-elevated.ps1' exited with code: 0
+2025/12/27 16:01:46 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:01:46 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:01:46 [INFO] 365 bytes written for 'stdout'
+2025/12/27 16:01:46 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:01:46 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:01:46 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:01:46 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 16:01:46 [INFO] 365 bytes written for 'stdout'
+2025/12/27 16:01:46 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 16:01:46 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:01:46 packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64 plugin: 2025/12/27 16:01:46 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:01:46 [INFO] (telemetry) ending windows-update
+2025/12/27 16:01:46 [INFO] (telemetry) Starting provisioner file
+2025/12/27 16:01:46 packer-provisioner-file plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 16:01:46 [DEBUG] - common: receiving ConfigSpec as gob
+[1;32m==> qemu.stage2: Uploading ./scripts/Win11Debloat/ => C:/Scripts/Win11Debloat/[0m
+2025/12/27 16:01:46 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:01:46 Uploading dir './scripts/Win11Debloat/' to 'C:/Scripts/Win11Debloat/'
+2025/12/27 16:14:26 [INFO] (telemetry) ending file
+2025/12/27 16:14:26 [INFO] (telemetry) Starting provisioner powershell
+2025/12/27 16:14:26 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 16:14:26 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 16:14:26 packer-provisioner-powershell plugin: Using script default execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 16:14:26 packer-provisioner-powershell plugin: Using script default elevated execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+[1;32m==> qemu.stage2: Provisioning with Powershell...[0m
+[1;32m==> qemu.stage2: Provisioning with powershell script: ./scripts/20-windows-updates.ps1[0m
+2025/12/27 16:14:26 packer-provisioner-powershell plugin: Opening ./scripts/20-windows-updates.ps1 for reading
+2025/12/27 16:14:26 packer-provisioner-powershell plugin: Uploading env vars to c:/Windows/Temp/packer-ps-env-vars-694ff7d2-1800-c759-b57d-a2f88029b5a2.ps1
+2025/12/27 16:14:26 packer-provisioner-powershell plugin: [INFO] 161 bytes written for 'uploadData'
+2025/12/27 16:14:26 [INFO] 161 bytes written for 'uploadData'
+2025/12/27 16:14:26 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:26 Uploading file to 'c:/Windows/Temp/packer-ps-env-vars-694ff7d2-1800-c759-b57d-a2f88029b5a2.ps1'
+2025/12/27 16:14:31 packer-provisioner-powershell plugin: [INFO] 3445 bytes written for 'uploadData'
+2025/12/27 16:14:31 [INFO] 3445 bytes written for 'uploadData'
+2025/12/27 16:14:31 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:31 Uploading file to 'c:/Windows/Temp/script-694ff7d2-9b5a-78f3-7bc0-657b2b2a4f24.ps1'
+2025/12/27 16:14:35 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:35 [INFO] starting remote command: powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7d2-1800-c759-b57d-a2f88029b5a2.ps1; &'c:/Windows/Temp/script-694ff7d2-9b5a-78f3-7bc0-657b2b2a4f24.ps1'; exit $LastExitCode }"
+[1;32m==> qemu.stage2: [2025-12-27 15:14:37] Starting Windows Updates provisioning script...[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:14:37] Installing Windows Updates as requested...[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:14:37] Checking for pending updates...[0m
+2025/12/27 16:14:39 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:39 [INFO] command 'powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7d2-1800-c759-b57d-a2f88029b5a2.ps1; &'c:/Windows/Temp/script-694ff7d2-9b5a-78f3-7bc0-657b2b2a4f24.ps1'; exit $LastExitCode }"' exited with code: 0
+2025/12/27 16:14:39 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:39 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:14:39 [INFO] 791 bytes written for 'stdout'
+2025/12/27 16:14:39 [INFO] 0 bytes written for 'stderr'
+[1;32m==> qemu.stage2: [2025-12-27 15:14:38] Could not check for updates using Get-WindowsUpdate: The term 'Get-WindowsUpdate' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.[0m
+2025/12/27 16:14:39 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:14:39 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:14:39 packer-provisioner-powershell plugin: [INFO] 791 bytes written for 'stdout'
+2025/12/27 16:14:39 packer-provisioner-powershell plugin: [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:14:39 packer-provisioner-powershell plugin: [INFO] RPC client: Communicator ended with: 0
+[1;32m==> qemu.stage2: [2025-12-27 15:14:38] Could not check for updates using WMI: Access is denied. (Exception from HRESULT: 0x80070005 (E_ACCESSDENIED))[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:14:38] Windows Update installation process completed by Packer provisioner[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:14:38] Windows Updates provisioning script completed successfully.[0m
+2025/12/27 16:14:39 packer-provisioner-powershell plugin: c:/Windows/Temp/script-694ff7d2-9b5a-78f3-7bc0-657b2b2a4f24.ps1 returned with exit code 0
+2025/12/27 16:14:39 packer-provisioner-powershell plugin: [INFO] 511 bytes written for 'uploadData'
+2025/12/27 16:14:39 [INFO] 511 bytes written for 'uploadData'
+2025/12/27 16:14:39 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:39 Uploading file to 'c:/Windows/Temp/packer-cleanup-694ff7d2-c4c1-3996-4371-6c15ea2bf720.ps1'
+2025/12/27 16:14:43 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:43 [INFO] starting remote command: powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7d2-1800-c759-b57d-a2f88029b5a2.ps1; &'c:/Windows/Temp/packer-cleanup-694ff7d2-c4c1-3996-4371-6c15ea2bf720.ps1'; exit $LastExitCode }"
+2025/12/27 16:14:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:45 [INFO] command 'powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7d2-1800-c759-b57d-a2f88029b5a2.ps1; &'c:/Windows/Temp/packer-cleanup-694ff7d2-c4c1-3996-4371-6c15ea2bf720.ps1'; exit $LastExitCode }"' exited with code: 0
+2025/12/27 16:14:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:45 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:14:45 [INFO] 0 bytes written for 'stdout'
+2025/12/27 16:14:45 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:14:45 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:14:45 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: [INFO] 0 bytes written for 'stdout'
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:14:45 [INFO] (telemetry) ending powershell
+2025/12/27 16:14:45 [INFO] (telemetry) Starting provisioner powershell
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 16:14:45 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: Using script default execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: Using script default elevated execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+[1;32m==> qemu.stage2: Provisioning with Powershell...[0m
+[1;32m==> qemu.stage2: Provisioning with powershell script: ./scripts/30-debloat.ps1[0m
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: Opening ./scripts/30-debloat.ps1 for reading
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: Uploading env vars to c:/Windows/Temp/packer-ps-env-vars-694ff7e5-cf39-33b7-245a-e21dbf0684d2.ps1
+2025/12/27 16:14:45 packer-provisioner-powershell plugin: [INFO] 161 bytes written for 'uploadData'
+2025/12/27 16:14:45 [INFO] 161 bytes written for 'uploadData'
+2025/12/27 16:14:45 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:45 Uploading file to 'c:/Windows/Temp/packer-ps-env-vars-694ff7e5-cf39-33b7-245a-e21dbf0684d2.ps1'
+2025/12/27 16:14:49 packer-provisioner-powershell plugin: [INFO] 1513 bytes written for 'uploadData'
+2025/12/27 16:14:49 [INFO] 1513 bytes written for 'uploadData'
+2025/12/27 16:14:49 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:49 Uploading file to 'c:/Windows/Temp/script-694ff7e5-1ccb-d72c-7f86-7c5dca9de29a.ps1'
+2025/12/27 16:14:54 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:14:54 [INFO] starting remote command: powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7e5-cf39-33b7-245a-e21dbf0684d2.ps1; &'c:/Windows/Temp/script-694ff7e5-1ccb-d72c-7f86-7c5dca9de29a.ps1'; exit $LastExitCode }"
+[1;32m==> qemu.stage2: [2025-12-27 15:14:56] Starting Win11Debloat execution script...[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:14:56] Found Win11Debloat script at C:\Scripts\Win11Debloat\Win11Debloat.ps1[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:14:56] Executing Win11Debloat with -RunDefaults -Silent parameters...[0m
+[1;32m==> qemu.stage2: -------------------------------------------------------------------------------------------[0m
+[1;32m==> qemu.stage2:  Win11Debloat Script - Default Mode (User: vagrant)[0m
+[1;32m==> qemu.stage2: -------------------------------------------------------------------------------------------[0m
+[1;32m==> qemu.stage2: > Attempting to create a system restore point...[0m
+[1;32m==> qemu.stage2: Error: Failed to create system restore point, operation timed out[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Removing selected apps...[0m
+[1;32m==> qemu.stage2: 89 apps selected for removal[0m
+[1;32m==> qemu.stage2: Attempting to remove Clipchamp.Clipchamp...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.3DBuilder...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.549981C3F5F10...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingFinance...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingFoodAndDrink...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingHealthAndFitness...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingNews...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingSports...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingTranslator...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingTravel...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingWeather...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Copilot...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Getstarted...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Messaging...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Microsoft3DViewer...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.MicrosoftJournal...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.MicrosoftOfficeHub...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.MicrosoftPowerBIForWindows...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.MicrosoftSolitaireCollection...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.MicrosoftStickyNotes...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.MixedReality.Portal...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.NetworkSpeedTest...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.News...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Office.OneNote...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Office.Sway...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.OneConnect...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Print3D...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.PowerAutomateDesktop...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.SkypeApp...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Todos...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Windows.DevHome...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.WindowsAlarms...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.WindowsFeedbackHub...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.WindowsMaps...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.WindowsSoundRecorder...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.XboxApp...[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.ZuneVideo...[0m
+[1;32m==> qemu.stage2: Attempting to remove MicrosoftCorporationII.MicrosoftFamily...[0m
+[1;32m==> qemu.stage2: Attempting to remove MicrosoftCorporationII.QuickAssist...[0m
+[1;32m==> qemu.stage2: Attempting to remove MicrosoftTeams...[0m
+[1;32m==> qemu.stage2: Attempting to remove MSTeams...[0m
+[1;32m==> qemu.stage2: Attempting to remove ACGMediaPlayer...[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;32m==> qemu.stage2: Attempting to remove ActiproSoftwareLLC...[0m
+[1;32m==> qemu.stage2: Attempting to remove AdobeSystemsIncorporated.AdobePhotoshopExpress...[0m
+[1;32m==> qemu.stage2: Attempting to remove Amazon.com.Amazon...[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;32m==> qemu.stage2: Attempting to remove AmazonVideo.PrimeVideo...[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;32m==> qemu.stage2: Attempting to remove Asphalt8Airborne...[0m
+[1;32m==> qemu.stage2: Attempting to remove AutodeskSketchBook...[0m
+[1;32m==> qemu.stage2: Attempting to remove CaesarsSlotsFreeCasino...[0m
+[1;32m==> qemu.stage2: Attempting to remove COOKINGFEVER...[0m
+[1;32m==> qemu.stage2: Attempting to remove CyberLinkMediaSuiteEssentials...[0m
+[1;32m==> qemu.stage2: Attempting to remove DisneyMagicKingdoms...[0m
+[1;32m==> qemu.stage2: Attempting to remove Disney...[0m
+[1;32m==> qemu.stage2: Attempting to remove DrawboardPDF...[0m
+[1;32m==> qemu.stage2: Attempting to remove Duolingo-LearnLanguagesforFree...[0m
+[1;32m==> qemu.stage2: Attempting to remove EclipseManager...[0m
+[1;32m==> qemu.stage2: Attempting to remove Facebook...[0m
+[1;32m==> qemu.stage2: Attempting to remove FarmVille2CountryEscape...[0m
+[1;32m==> qemu.stage2: Attempting to remove fitbit...[0m
+[1;32m==> qemu.stage2: Attempting to remove Flipboard...[0m
+[1;32m==> qemu.stage2: Attempting to remove HiddenCity...[0m
+[1;32m==> qemu.stage2: Attempting to remove HULULLC.HULUPLUS...[0m
+[1;32m==> qemu.stage2: Attempting to remove iHeartRadio...[0m
+[1;32m==> qemu.stage2: Attempting to remove Instagram...[0m
+[1;32m==> qemu.stage2: Attempting to remove king.com.BubbleWitch3Saga...[0m
+[1;32m==> qemu.stage2: Attempting to remove king.com.CandyCrushSaga...[0m
+[1;32m==> qemu.stage2: Attempting to remove king.com.CandyCrushSodaSaga...[0m
+[1;32m==> qemu.stage2: Attempting to remove LinkedInforWindows...[0m
+[1;32m==> qemu.stage2: Attempting to remove MarchofEmpires...[0m
+[1;32m==> qemu.stage2: Attempting to remove Netflix...[0m
+[1;32m==> qemu.stage2: Attempting to remove NYTCrossword...[0m
+[1;32m==> qemu.stage2: Attempting to remove OneCalendar...[0m
+[1;32m==> qemu.stage2: Attempting to remove PandoraMediaInc...[0m
+[1;32m==> qemu.stage2: Attempting to remove PhototasticCollage...[0m
+[1;32m==> qemu.stage2: Attempting to remove PicsArt-PhotoStudio...[0m
+[1;32m==> qemu.stage2: Attempting to remove Plex...[0m
+[1;32m==> qemu.stage2: Attempting to remove PolarrPhotoEditorAcademicEdition...[0m
+[1;32m==> qemu.stage2: Attempting to remove Royal Revolt...[0m
+[1;32m==> qemu.stage2: Attempting to remove Shazam...[0m
+[1;32m==> qemu.stage2: Attempting to remove Sidia.LiveWallpaper...[0m
+[1;32m==> qemu.stage2: Attempting to remove SlingTV...[0m
+[1;32m==> qemu.stage2: Attempting to remove Spotify...[0m
+[1;32m==> qemu.stage2: Attempting to remove TikTok...[0m
+[1;32m==> qemu.stage2: Attempting to remove TuneInRadio...[0m
+[1;32m==> qemu.stage2: Attempting to remove Twitter...[0m
+[1;32m==> qemu.stage2: Attempting to remove Viber...[0m
+[1;32m==> qemu.stage2: Attempting to remove WinZipUniversal...[0m
+[1;32m==> qemu.stage2: Attempting to remove Wunderlist...[0m
+[1;32m==> qemu.stage2: Attempting to remove XING...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling telemetry, diagnostic data, activity history, app-launch tracking and targeted ads...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling tips, tricks, suggestions and ads across Windows...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling ads, suggestions and the MSN news feed in Microsoft Edge...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling tips & tricks on the lockscreen...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling Bing web search, Bing AI and Cortana from Windows search...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.BingSearch...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling Microsoft Copilot...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.Copilot...[0m
+[1;32m==> qemu.stage2:[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;32m==> qemu.stage2: > Disabling Windows Recall...[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;31m==> qemu.stage2: The operation completed successfully.[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling Click to Do...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling widgets on the taskbar & lockscreen...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: Attempting to remove Microsoft.StartExperiencesApp...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Hiding the chat icon from the taskbar...[0m
+[1;32m==> qemu.stage2: Feature is not available on Windows 11[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Enabling file extensions for known file types...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling Fast Start-up...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Hiding the 3D objects folder from the File Explorer navigation pane...[0m
+[1;32m==> qemu.stage2: Feature is not available on Windows 11[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Disabling network connectivity during Modern Standby...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: > Attempting to restart the Windows Explorer process to apply all changes...[0m
+[1;32m==> qemu.stage2: Restarting the Windows Explorer process... (This may cause your screen to flicker)[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: Script completed! Please check above for any errors.[0m
+[1;32m==> qemu.stage2: Transcript stopped, output file is C:\Scripts\Win11Debloat\Win11Debloat.log[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:16:13] Win11Debloat script executed successfully[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:16:13] Win11Debloat execution script completed.[0m
+2025/12/27 16:16:14 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:14 [INFO] command 'powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7e5-cf39-33b7-245a-e21dbf0684d2.ps1; &'c:/Windows/Temp/script-694ff7e5-1ccb-d72c-7f86-7c5dca9de29a.ps1'; exit $LastExitCode }"' exited with code: 0
+2025/12/27 16:16:14 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:14 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:16:14 [INFO] 6087 bytes written for 'stdout'
+2025/12/27 16:16:14 [INFO] 480 bytes written for 'stderr'
+2025/12/27 16:16:14 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:16:14 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:16:14 packer-provisioner-powershell plugin: [INFO] 6087 bytes written for 'stdout'
+2025/12/27 16:16:14 packer-provisioner-powershell plugin: [INFO] 480 bytes written for 'stderr'
+2025/12/27 16:16:14 packer-provisioner-powershell plugin: [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:16:14 packer-provisioner-powershell plugin: c:/Windows/Temp/script-694ff7e5-1ccb-d72c-7f86-7c5dca9de29a.ps1 returned with exit code 0
+2025/12/27 16:16:14 packer-provisioner-powershell plugin: [INFO] 511 bytes written for 'uploadData'
+2025/12/27 16:16:14 [INFO] 511 bytes written for 'uploadData'
+2025/12/27 16:16:14 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:14 Uploading file to 'c:/Windows/Temp/packer-cleanup-694ff7e5-cb54-cbf6-cce3-447a585dcde6.ps1'
+2025/12/27 16:16:23 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:23 [INFO] starting remote command: powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7e5-cf39-33b7-245a-e21dbf0684d2.ps1; &'c:/Windows/Temp/packer-cleanup-694ff7e5-cb54-cbf6-cce3-447a585dcde6.ps1'; exit $LastExitCode }"
+2025/12/27 16:16:26 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:26 [INFO] command 'powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff7e5-cf39-33b7-245a-e21dbf0684d2.ps1; &'c:/Windows/Temp/packer-cleanup-694ff7e5-cb54-cbf6-cce3-447a585dcde6.ps1'; exit $LastExitCode }"' exited with code: 0
+2025/12/27 16:16:26 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:26 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:16:26 [INFO] 0 bytes written for 'stdout'
+2025/12/27 16:16:26 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:16:26 [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:16:26 [INFO] RPC endpoint: Communicator ended with: 0
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: [INFO] 0 bytes written for 'stdout'
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: [INFO] RPC client: Communicator ended with: 0
+2025/12/27 16:16:26 [INFO] (telemetry) ending powershell
+2025/12/27 16:16:26 [INFO] (telemetry) Starting provisioner powershell
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: [DEBUG] - common: sending ConfigSpec as gob
+2025/12/27 16:16:26 [DEBUG] - common: receiving ConfigSpec as gob
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: Using script default execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: Using script default elevated execute command powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit $LastExitCode }"
+[1;32m==> qemu.stage2: Provisioning with Powershell...[0m
+[1;32m==> qemu.stage2: Provisioning with powershell script: ./scripts/40-dism-cleanup.ps1[0m
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: Opening ./scripts/40-dism-cleanup.ps1 for reading
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: Uploading env vars to c:/Windows/Temp/packer-ps-env-vars-694ff84a-9558-5ef0-8323-9af1d5bca55c.ps1
+2025/12/27 16:16:26 packer-provisioner-powershell plugin: [INFO] 161 bytes written for 'uploadData'
+2025/12/27 16:16:26 [INFO] 161 bytes written for 'uploadData'
+2025/12/27 16:16:26 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:26 Uploading file to 'c:/Windows/Temp/packer-ps-env-vars-694ff84a-9558-5ef0-8323-9af1d5bca55c.ps1'
+2025/12/27 16:16:31 packer-provisioner-powershell plugin: [INFO] 2714 bytes written for 'uploadData'
+2025/12/27 16:16:31 [INFO] 2714 bytes written for 'uploadData'
+2025/12/27 16:16:31 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:31 Uploading file to 'c:/Windows/Temp/script-694ff84a-4302-90ea-6c4c-fbf6581b3f80.ps1'
+2025/12/27 16:16:36 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:16:36 [INFO] starting remote command: powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff84a-9558-5ef0-8323-9af1d5bca55c.ps1; &'c:/Windows/Temp/script-694ff84a-4302-90ea-6c4c-fbf6581b3f80.ps1'; exit $LastExitCode }"
+[1;32m==> qemu.stage2: [2025-12-27 15:16:38] Starting DISM cleanup script...[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:16:38] Running DISM cleanup with /StartComponentCleanup /ResetBase...[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: Deployment Image Servicing and Management tool[0m
+[1;32m==> qemu.stage2: Version: 10.0.26100.5074[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: Image Version: 10.0.26100.7462[0m
+[1;32m==> qemu.stage2:[0m
+[1;32m==> qemu.stage2: [==                         5.0%                           ][0m
+[1;32m==> qemu.stage2: [==                         5.0%                           ][0m
+[1;32m==> qemu.stage2: [==                         5.0%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===                        5.7%                           ][0m
+[1;32m==> qemu.stage2: [===========================64.2%=====                     ][0m
+[1;32m==> qemu.stage2: [===========================70.0%========                  ][0m
+[1;32m==> qemu.stage2: [===========================70.0%========                  ][0m
+[1;32m==> qemu.stage2: [===========================70.0%========                  ][0m
+[1;32m==> qemu.stage2: [===========================70.0%========                  ][0m
+[1;32m==> qemu.stage2: [===========================71.4%=========                 ][0m
+[1;32m==> qemu.stage2: [===========================76.0%============              ][0m
+[1;32m==> qemu.stage2: [===========================77.7%=============             ][0m
+[1;32m==> qemu.stage2: [===========================77.7%=============             ][0m
+[1;32m==> qemu.stage2: [===========================78.1%=============             ][0m
+[1;32m==> qemu.stage2: [===========================78.3%=============             ][0m
+[1;32m==> qemu.stage2: [===========================78.6%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.0%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.2%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.3%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.3%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.3%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.3%=============             ][0m
+[1;32m==> qemu.stage2: [===========================79.7%==============            ][0m
+[1;32m==> qemu.stage2: [===========================80.1%==============            ][0m
+[1;32m==> qemu.stage2: [===========================80.4%==============            ][0m
+[1;32m==> qemu.stage2: [===========================80.9%==============            ][0m
+[1;32m==> qemu.stage2: [===========================81.2%===============           ][0m
+[1;32m==> qemu.stage2: [===========================81.8%===============           ][0m
+[1;32m==> qemu.stage2: [===========================82.0%===============           ][0m
+[1;32m==> qemu.stage2: [===========================82.2%===============           ][0m
+[1;32m==> qemu.stage2: [===========================82.5%===============           ][0m
+[1;32m==> qemu.stage2: [===========================82.6%===============           ][0m
+[1;32m==> qemu.stage2: [===========================82.7%===============           ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.0%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.1%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.2%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.4%================          ][0m
+[1;32m==> qemu.stage2: [===========================83.8%================          ][0m
+[1;32m==> qemu.stage2: [===========================84.3%================          ][0m
+[1;32m==> qemu.stage2: [===========================84.6%=================         ][0m
+[1;32m==> qemu.stage2: [===========================84.6%=================         ][0m
+[1;32m==> qemu.stage2: [===========================84.6%=================         ][0m
+[1;32m==> qemu.stage2: [===========================84.7%=================         ][0m
+[1;32m==> qemu.stage2: [===========================84.8%=================         ][0m
+[1;32m==> qemu.stage2: [===========================85.8%=================         ][0m
+[1;32m==> qemu.stage2: [===========================86.4%==================        ][0m
+[1;32m==> qemu.stage2: [===========================86.7%==================        ][0m
+[1;32m==> qemu.stage2: [===========================86.9%==================        ][0m
+[1;32m==> qemu.stage2: [===========================86.9%==================        ][0m
+[1;32m==> qemu.stage2: [===========================87.4%==================        ][0m
+[1;32m==> qemu.stage2: [===========================88.0%===================       ][0m
+[1;32m==> qemu.stage2: [===========================88.4%===================       ][0m
+[1;32m==> qemu.stage2: [===========================89.0%===================       ][0m
+[1;32m==> qemu.stage2: [===========================89.5%===================       ][0m
+[1;32m==> qemu.stage2: [===========================89.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================89.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================89.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================89.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================89.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.1%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.2%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.4%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.5%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.5%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================90.7%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.0%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.2%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.3%====================      ][0m
+[1;32m==> qemu.stage2: [===========================91.4%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================91.4%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================91.7%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================91.9%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.0%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.1%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.3%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.3%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.3%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.3%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.3%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.3%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================92.9%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================93.0%=====================     ][0m
+[1;32m==> qemu.stage2: [===========================93.5%======================    ][0m
+[1;32m==> qemu.stage2: [===========================93.7%======================    ][0m
+[1;32m==> qemu.stage2: [===========================93.9%======================    ][0m
+[1;32m==> qemu.stage2: [===========================93.9%======================    ][0m
+[1;32m==> qemu.stage2: [===========================93.9%======================    ][0m
+[1;32m==> qemu.stage2: [===========================93.9%======================    ][0m
+[1;32m==> qemu.stage2: [===========================93.9%======================    ][0m
+[1;32m==> qemu.stage2: [===========================94.1%======================    ][0m
+[1;32m==> qemu.stage2: [===========================94.3%======================    ][0m
+[1;32m==> qemu.stage2: [===========================94.5%======================    ][0m
+[1;32m==> qemu.stage2: [===========================94.5%======================    ][0m
+[1;32m==> qemu.stage2: [===========================94.6%======================    ][0m
+[1;32m==> qemu.stage2: [===========================94.9%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.1%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.3%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.5%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.6%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.7%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.8%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================95.9%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================96.2%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================96.4%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================96.4%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================96.5%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================96.5%=======================   ][0m
+[1;32m==> qemu.stage2: [===========================96.6%========================  ][0m
+[1;32m==> qemu.stage2: [===========================97.0%========================  ][0m
+[1;32m==> qemu.stage2: [===========================97.2%========================  ][0m
+[1;32m==> qemu.stage2: [===========================97.7%========================  ][0m
+[1;32m==> qemu.stage2: [===========================97.9%========================  ][0m
+[1;32m==> qemu.stage2: [===========================98.0%========================  ][0m
+[1;32m==> qemu.stage2: [===========================98.1%========================  ][0m
+[1;32m==> qemu.stage2: [===========================98.2%========================  ][0m
+[1;32m==> qemu.stage2: [===========================98.4%========================= ][0m
+[1;32m==> qemu.stage2: [===========================99.0%========================= ][0m
+[1;32m==> qemu.stage2: [===========================99.7%========================= ][0m
+[1;32m==> qemu.stage2: [==========================100.0%==========================][0m
+[1;32m==> qemu.stage2: The operation completed successfully.[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:21:56] DISM cleanup completed successfully[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:21:56] Cleaning Windows Update cache...[0m
+[1;32m==> qemu.stage2: [2025-12-27 15:22:26] Cleaned Windows Update cache directory[0m
+2025/12/27 16:22:27 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:22:27 [INFO] command 'powershell -executionpolicy bypass "& { if (Test-Path variable:global:ProgressPreference){set-variable -name variable:global:ProgressPreference -value 'SilentlyContinue'};. c:/Windows/Temp/packer-ps-env-vars-694ff84a-9558-5ef0-8323-9af1d5bca55c.ps1; &'c:/Windows/Temp/script-694ff84a-4302-90ea-6c4c-fbf6581b3f80.ps1'; exit $LastExitCode }"' exited with code: 2
+2025/12/27 16:22:27 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:22:27 [INFO] RPC endpoint: Communicator ended with: 2
+2025/12/27 16:22:27 [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:22:27 [INFO] 12421 bytes written for 'stdout'
+2025/12/27 16:22:27 [INFO] RPC client: Communicator ended with: 2
+2025/12/27 16:22:27 [INFO] RPC endpoint: Communicator ended with: 2
+[1;32m==> qemu.stage2: [2025-12-27 15:22:26] DISM cleanup script completed.[0m
+2025/12/27 16:22:27 packer-provisioner-powershell plugin: [INFO] 12421 bytes written for 'stdout'
+2025/12/27 16:22:27 packer-provisioner-powershell plugin: [INFO] 0 bytes written for 'stderr'
+2025/12/27 16:22:27 packer-provisioner-powershell plugin: [INFO] RPC client: Communicator ended with: 2
+2025/12/27 16:22:27 packer-provisioner-powershell plugin: c:/Windows/Temp/script-694ff84a-4302-90ea-6c4c-fbf6581b3f80.ps1 returned with exit code 2
+2025/12/27 16:22:27 [INFO] (telemetry) ending powershell
+[1;32m==> qemu.stage2: Provisioning step had errors: Running the cleanup provisioner, if present...[0m
+2025/12/27 16:22:27 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:22:27 failed to unlock port lockfile: close tcp 127.0.0.1:5905: use of closed network connection
+2025/12/27 16:22:27 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:22:27 failed to unlock port lockfile: close tcp 127.0.0.1:2708: use of closed network connection
+2025/12/27 16:22:27 packer-plugin-qemu_v1.1.4_x5.0_linux_amd64 plugin: 2025/12/27 16:22:27 killing swtpm with PID 872843
+2025/12/27 16:22:27 [INFO] (telemetry) ending qemu.stage2
+==> Wait completed after 57 minutes 41 seconds
+2025/12/27 16:22:27 machine readable: error-count []string{"1"}
+==> Some builds didn't complete successfully and had errors:
+2025/12/27 16:22:27 machine readable: qemu.stage2,error []string{"Script exited with non-zero exit status: 2. Allowed exit codes are: [0]"}
+==> Builds finished but no artifacts were created.
+2025/12/27 16:22:27 [INFO] (telemetry) Finalizing.
+[1;32m==> qemu.stage2: Deleting output directory...[0m
+[1;31mBuild 'qemu.stage2' errored after 57 minutes 41 seconds: Script exited with non-zero exit status: 2. Allowed exit codes are: [0][0m
+
+==> Wait completed after 57 minutes 41 seconds
+
+==> Some builds didn't complete successfully and had errors:
+--> qemu.stage2: Script exited with non-zero exit status: 2. Allowed exit codes are: [0]
+
+==> Builds finished but no artifacts were created.
+2025/12/27 16:22:27 waiting for all plugin processes to complete...
+2025/12/27 16:22:27 /home/thomaier/.config/packer/plugins/github.com/rgl/windows-update/packer-plugin-windows-update_v0.16.8_x5.0_linux_amd64: plugin process exited
+2025/12/27 16:22:27 /usr/bin/packer: plugin process exited
+2025/12/27 16:22:27 /usr/bin/packer: plugin process exited
+2025/12/27 16:22:27 /usr/bin/packer: plugin process exited
+2025/12/27 16:22:27 /usr/bin/packer: plugin process exited
+2025/12/27 16:22:27 /usr/bin/packer: plugin process exited
+2025/12/27 16:22:27 [ERR] Error decoding response stream 31: EOF
+2025/12/27 16:22:27 [ERR] Error decoding response stream 19: EOF
+2025/12/27 16:22:27 /home/thomaier/.config/packer/plugins/github.com/hashicorp/qemu/packer-plugin-qemu_v1.1.4_x5.0_linux_amd64: plugin process exited

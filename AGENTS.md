@@ -3,6 +3,9 @@
 This file provides guidance to agents when working with code in this repository.
 
 ## Build Commands
+
+The project now supports a multi-stage build pipeline that separates the image creation process into distinct stages for optimized build times and modular customization. The multi-stage pipeline is now the recommended approach for building images.
+
 ```shell
 # Initialize plugins (first time only)
 packer init windows.pkr.hcl
@@ -13,6 +16,150 @@ TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.
 # Build image without Windows Updates (faster builds for development)
 TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.pkrvars.hcl -var install_updates=false windows.pkr.hcl
 ```
+
+*Note: The original `windows.pkr.hcl` is still available for single-stage builds, but the multi-stage pipeline approach is now recommended for better build times and modularity.*
+
+## Multi-Stage Build Pipeline
+
+The project now supports a multi-stage build pipeline that separates the image creation process into distinct stages for optimized build times and modular customization.
+
+### Pipeline Overview
+
+The build is divided into 4 stages:
+
+1. **Stage 1: Base Windows Installation** (~30 minutes)
+   - Windows 11 installation from ISO
+   - VirtIO driver installation
+   - WinRM/SSH enablement
+   - Chocolatey installation
+   - Output: `output-stage1/stage1-base.qcow2`
+
+2. **Stage 2: Windows Updates & Debloating** (~3-4 hours with updates, ~30 min without)
+   - Windows Update installation (optional)
+   - Win11Debloat execution
+   - DISM cleanup operations
+   - Output: `output-stage2/stage2-updated.qcow2`
+
+3. **Stage 3: Software Installation** (~20-30 minutes)
+   - QEMU Guest Agent installation
+   - OpenSSH Server installation
+   - Chocolatey packages from JSON configuration
+   - Output: `output-stage3/stage3-software.qcow2`
+
+4. **Stage 4: Final Image Preparation** (~10 minutes)
+   - Windows Update control scripts deployment
+   - Disk compaction with sdelete
+   - Final image optimization
+   - Output: `output-stage4/windows-11-x64.qcow2`
+
+### Build Commands
+
+```shell
+# Full multi-stage build (all stages)
+./build-pipeline.sh
+
+# Clean build from scratch
+./build-pipeline.sh --clean
+
+# Build without Windows Updates (faster development builds)
+./build-pipeline.sh --skip-updates
+
+# Resume from a specific stage (requires previous stage artifacts)
+./build-pipeline.sh --from-stage 3
+
+# Rebuild only a specific stage
+./build-pipeline.sh --stage 2
+
+# Debug mode (keep temporary files)
+./build-pipeline.sh --debug
+```
+
+### When to Use Each Stage
+
+**Full Pipeline (`./build-pipeline.sh`)**
+- Creating production-ready images
+- First-time builds
+- Major Windows updates or configuration changes
+
+**Skip Updates (`./build-pipeline.sh --skip-updates`)**
+- Development and testing
+- Faster iteration cycles
+- When Windows Updates aren't critical
+
+**Partial Rebuilds**
+- `--from-stage 2`: Rebuild from updates stage (e.g., after changing debloat settings)
+- `--from-stage 3`: Rebuild from software stage (e.g., after modifying Chocolatey packages)
+- `--from-stage 4`: Rebuild only final stage (e.g., after changing compaction settings)
+
+**Single Stage Rebuilds**
+- `--stage 2`: Re-run updates/debloat only
+- `--stage 3`: Re-install software only
+- `--stage 4`: Re-run final preparation only
+
+### Stage-Specific Files
+
+Each stage has its own template and variable files:
+
+- **Stage 1**: `stage1-base.pkr.hcl`, `stage1-vars.pkrvars.hcl`
+- **Stage 2**: `stage2-updates.pkr.hcl`, `stage2-vars.pkrvars.hcl`
+- **Stage 3**: `stage3-software.pkr.hcl`, `stage3-vars.pkrvars.hcl`
+- **Stage 4**: `stage4-finalize.pkr.hcl`, `stage4-vars.pkrvars.hcl`
+- **Global**: `global-vars.pkrvars.hcl` (shared across all stages)
+
+### Customization
+
+**Modify Chocolatey Packages**
+Edit `answer_files/windows-11-x64/chocolatey-packages.json` and rebuild from Stage 3:
+```shell
+./build-pipeline.sh --from-stage 3
+```
+
+**Change Debloat Settings**
+Modify debloat configuration and rebuild from Stage 2:
+```shell
+./build-pipeline.sh --from-stage 2
+```
+
+**Update Provisioning Scripts**
+After modifying scripts in `scripts/`, rebuild from the appropriate stage:
+- Scripts 0-19: Rebuild from Stage 1
+- Scripts 20-40: Rebuild from Stage 2
+- Scripts 50-70: Rebuild from Stage 3
+- Scripts 80-90: Rebuild from Stage 4
+
+### Build Artifacts
+
+Each stage produces:
+- QCOW2 disk image in `output-stageN/`
+- Manifest file with build metadata
+- Build logs in `logs/stageN.log`
+
+### Time Savings
+
+The multi-stage approach provides significant time savings for iterative development:
+
+- **Software changes**: 30 min (Stage 3 only) vs 4+ hours (full build)
+- **Final tweaks**: 10 min (Stage 4 only) vs 4+ hours (full build)
+- **Skip updates**: 1 hour total vs 4+ hours (with updates)
+
+### Troubleshooting
+
+**Stage fails to start**
+- Verify previous stage artifacts exist
+- Check `logs/stageN.log` for errors
+- Ensure VirtIO ISO is present at `~/.local/share/libvirt/images/virtio-win.iso`
+
+**Artifact validation fails**
+- Check disk space (each stage requires ~20-30 GB)
+- Verify QCOW2 file is not corrupted
+- Review manifest file for build metadata
+
+**Build hangs during provisioning**
+- Check WinRM connectivity (timeout is 1h30m)
+- Review stage log file for last successful operation
+- Verify Windows is not waiting for user input
+
+For more details, see the architecture document at `plans/multi-stage-architecture-complete.md`.
 
 ## Testing Commands
 ```shell
@@ -32,7 +179,7 @@ TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.
 5. **WinRM Timeout**: 1h30m timeout at windows.pkr.hcl:122 - Windows 11 install is slow
 6. **TPM Configuration**: Use Packer's built-in `vtpm = true` and `tpm_device_type = "tpm-crb"` - do not manually configure TPM in qemuargs
 7. **Windows 11 Compatibility**: Registry bypass keys must be in the first `Microsoft-Windows-Setup` component in the windowsPE pass
-8. **Windows Update Provisioner**: Significantly increases build time (3-4 hours) - see windows.pkr.hcl:143-156
+8. **Windows Update Provisioner**: Significantly increases build time (3-4 hours in Stage 2) - see windows.pkr.hcl:143-156
 9. **Windows Update Toggle**: Controlled via `install_updates` variable - set to `false` for faster builds without updates
 
 ## Windows Update Control
@@ -46,7 +193,7 @@ The Windows Update toggle mechanism provides two levels of control:
 
 The `install_updates` variable controls whether Windows Updates are installed during the Packer build process:
 
-- `install_updates = true` (default): Windows Updates are installed during build, adding 3-4 hours to build time
+- `install_updates = true` (default): Windows Updates are installed during build, adding 3-4 hours to Stage 2 build time
 - `install_updates = false`: Skips Windows Update installation for faster builds (development/testing)
 
 To build without Windows Updates:

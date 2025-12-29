@@ -5,19 +5,18 @@ packer {
       version = ">= 1.0.7"
       source  = "github.com/hashicorp/qemu"
     }
-    windows-update = {
-      version = "0.16.8"
-      source  = "github.com/rgl/windows-update"
-    }
   }
 }
 
+# Variables
 variable "os_name" {
   type = string
 }
+
 variable "os_version" {
   type = string
 }
+
 variable "os_arch" {
   type = string
 }
@@ -27,34 +26,37 @@ variable "efi_boot" {
   default = true
 }
 
-variable "install_updates" {
-  type        = bool
-  default     = true
-  description = "Whether to install Windows updates during the build process. Set to false for faster iteration builds."
-}
 variable "efi_firmware_code" {
   type    = string
-  default = "/usr/share/OVMF/OVMF_CODE_4M.secboot.fd"
+  default = "/usr/share/edk2/x64/OVMF_CODE.4m.fd"
 }
+
 variable "efi_firmware_vars" {
   type    = string
-  default = "/usr/share/OVMF/OVMF_VARS_4M.ms.fd"
+  default = "/usr/share/edk2/x64/OVMF_VARS.4m.fd"
 }
 
 variable "local_libvirt_images" {
   type    = string
   default = "${env("HOME")}/.local/share/libvirt/images"
 }
+
 variable "iso_url" {
   type = string
 }
+
 variable "iso_checksum" {
   type = string
 }
 
 variable "output_directory" {
   type    = string
-  default = "output-vm"
+  default = "output-stage1"
+}
+
+variable "vm_name" {
+  type    = string
+  default = "stage1-base"
 }
 
 variable "headless" {
@@ -62,12 +64,28 @@ variable "headless" {
   default = false
 }
 
-locals {
-  iso_target_path = "${var.local_libvirt_images}/${var.os_name}-${var.os_version}-${var.os_arch}.iso"
+variable "memory" {
+  type    = number
+  default = 4096
 }
 
-source "qemu" "vm" {
-  vm_name = "${var.os_name}-${var.os_version}-${var.os_arch}"
+variable "cores" {
+  type    = number
+  default = 2
+}
+
+variable "disk_size" {
+  type    = string
+  default = "60G"
+}
+
+locals {
+  iso_target_path = "${var.local_libvirt_images}/${var.os_name}-${var.os_version}-${var.os_arch}.iso"
+  virtio_iso_path = "${var.local_libvirt_images}/virtio-win.iso"
+}
+
+source "qemu" "stage1" {
+  vm_name = var.vm_name
 
   efi_boot          = var.efi_boot
   efi_firmware_code = var.efi_firmware_code
@@ -81,16 +99,16 @@ source "qemu" "vm" {
 
   machine_type = "q35"
   cpu_model    = "host"
-  cores        = 4
-  memory       = 8192
+  cores        = var.cores
+  memory       = var.memory
   vga          = "qxl"
 
-  floppy_files = var.os_name == "windows" ? [
+  floppy_files = [
     "answer_files/${var.os_name}-${var.os_version}-${var.os_arch}/Autounattend.xml"
-  ] : []
+  ]
 
   disk_interface = "virtio-scsi"
-  disk_size      = "60G"
+  disk_size      = var.disk_size
   disk_discard   = "unmap"
 
   iso_url         = var.iso_url
@@ -103,9 +121,9 @@ source "qemu" "vm" {
       ["-drive", "if=pflash,unit=1,file=${var.output_directory}/efivars.fd,format=raw"],
     ] : [],
     [
-      ["-drive", "if=none,id=drive0,file=${var.output_directory}/${var.os_name}-${var.os_version}-${var.os_arch},format=qcow2,cache=writeback,discard=unmap"],
+      ["-drive", "if=none,id=drive0,file=${var.output_directory}/${var.vm_name},format=qcow2,cache=writeback,discard=unmap"],
       ["-drive", "media=cdrom,file=${local.iso_target_path}"],
-      ["-drive", "media=cdrom,file=${var.local_libvirt_images}/virtio-win.iso"],
+      ["-drive", "media=cdrom,file=${local.virtio_iso_path}"],
       ["-device", "virtio-scsi-pci,id=scsi0"],
       ["-device", "scsi-hd,bus=scsi0.0,drive=drive0"],
       ["-device", "virtio-net,netdev=user.0"],
@@ -119,7 +137,7 @@ source "qemu" "vm" {
   ]
 
   communicator   = "winrm"
-  winrm_timeout  = "3h"
+  winrm_timeout  = "1h30m"
   winrm_username = "vagrant"
   winrm_password = "vagrant"
 
@@ -129,65 +147,34 @@ source "qemu" "vm" {
 
 build {
   sources = [
-    "source.qemu.vm"
+    "source.qemu.stage1"
   ]
 
   provisioner "powershell" {
     scripts = ["./scripts/0-firstlogin.ps1"]
   }
 
-  provisioner "windows-restart" {
-    restart_timeout = "30m"
-  }
-
-  # Conditionally install Windows updates based on the install_updates variable
-  # When install_updates = false, this provisioner is completely skipped for faster builds
-  dynamic "provisioner" {
-    for_each = var.install_updates ? [1] : []
-    labels   = ["windows-update"]
-    content {
-      search_criteria = "IsInstalled=0"
-      filters = [
-        "exclude:$_.Title -like '*Preview*'",
-        "include:$true"
-      ]
-      update_limit = 25
-    }
-  }
-
   provisioner "powershell" {
-    scripts = ["./scripts/70-install-qemu-ga.ps1"]
-  }
-
-  provisioner "windows-restart" {
-    restart_timeout = "30m"
-  }
-
-  provisioner "powershell" {
-    elevated_user     = "vagrant"
-    elevated_password = "vagrant"
-    script            = "./scripts/50-install-openssh.ps1"
-  }
-
-  provisioner "powershell" {
-    scripts = ["./scripts/80-misc-software.ps1"]
-  }
-
-  # Copy Win11Debloat submodule to the VM
-  provisioner "file" {
-    source      = "./scripts/Win11Debloat/"
-    destination = "C:/Scripts/Win11Debloat/"
-  }
-
-  provisioner "powershell" {
-    scripts = ["./scripts/90-compact.ps1"]
-  }
-
-  # Copy Windows Update toggle scripts to the VM
-  # These scripts are always copied regardless of install_updates setting
-  # so they are available for runtime toggling of Windows Updates
-  provisioner "file" {
-    source      = "./scripts/windows-update/"
-    destination = "C:/Scripts/WindowsUpdate/"
+    inline = [
+      "# Create manifest file with build metadata",
+      "$manifest = @{",
+      "  stage        = \"stage1\"",
+      "  vm_name      = \"${var.vm_name}\"",
+      "  build_date   = (Get-Date).ToUniversalTime().ToString(\"yyyy-MM-ddTHH:mm:ssZ\")",
+      "  packer_version = \"${packer.version}\"",
+      "  os_name      = \"${var.os_name}\"",
+      "  os_version   = \"${var.os_version}\"",
+      "  os_arch      = \"${var.os_arch}\"",
+      "  iso_checksum = \"${var.iso_checksum}\"",
+      "  provisioners = @(\"scripts/0-firstlogin.ps1\")",
+      "  metadata     = @{",
+      "    memory = ${var.memory}",
+      "    cores  = ${var.cores}",
+      "  }",
+      "}",
+      "",
+      "$manifestJson = $manifest | ConvertTo-Json",
+      "Set-Content -Path \"C:\\stage1-manifest.json\" -Value $manifestJson"
+    ]
   }
 }

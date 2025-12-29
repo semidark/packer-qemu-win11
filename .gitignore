@@ -1,6 +1,11 @@
 *.box
 .vagrant
 output-*/
+output-stage1/
+output-stage2/
+output-stage3/
+output-stage4/
 tmp/
 packer_cache/
 inspiration/
+logs/

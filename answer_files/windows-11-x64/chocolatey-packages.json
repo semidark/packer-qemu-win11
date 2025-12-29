@@ -1,0 +1,52 @@
+{
+  "packages": [
+    {
+      "name": "7zip",
+      "enabled": true,
+      "description": "7-Zip file archiver with a high compression ratio"
+    },
+    {
+      "name": "notepadplusplus",
+      "enabled": true,
+      "description": "Notepad++ is a free source code editor and Notepad replacement"
+    },
+    {
+      "name": "git",
+      "enabled": true,
+      "description": "Git version control system"
+    },
+    {
+      "name": "googlechrome",
+      "enabled": true,
+      "description": "Google Chrome web browser"
+    },
+    {
+      "name": "firefox",
+      "enabled": true,
+      "description": "Mozilla Firefox web browser"
+    },
+    {
+      "name": "vscode",
+      "enabled": false,
+      "description": "Visual Studio Code - lightweight but powerful source code editor",
+      "continueOnError": true
+    },
+    {
+      "name": "nodejs",
+      "enabled": false,
+      "description": "Node.js JavaScript runtime",
+      "continueOnError": true
+    },
+    {
+      "name": "python3",
+      "enabled": false,
+      "description": "Python 3 programming language",
+      "continueOnError": true
+    }
+  ],
+  "metadata": {
+    "created": "2025-12-27",
+    "description": "Default Chocolatey packages for Windows 11 development image",
+    "version": "1.0"
+  }
+}
