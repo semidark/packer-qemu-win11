@@ -20,8 +20,8 @@ try {
 
     # Disable hibernation
     Write-Log "Disabling hibernation..."
-    & reg.exe ADD HKLM\SYSTEM\CurrentControlSet\Control\Power\ /v HibernateFileSizePercent /t REG_DWORD /d 0 /f
-    & reg.exe ADD HKLM\SYSTEM\CurrentControlSet\Control\Power\ /v HibernateEnabled /t REG_DWORD /d 0 /f
+    & reg.exe ADD HKLM\SYSTEM\CurrentControlSet\Control\Power /v HibernateFileSizePercent /t REG_DWORD /d 0 /f
+    & reg.exe ADD HKLM\SYSTEM\CurrentControlSet\Control\Power /v HibernateEnabled /t REG_DWORD /d 0 /f
     powercfg /h off
 
     # Disable password expiration for vagrant user
