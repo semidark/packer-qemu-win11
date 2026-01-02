@@ -73,65 +73,42 @@
                     <DiskID>0</DiskID>
                     <WillWipeDisk>true</WillWipeDisk>
                     <CreatePartitions>
-
-                        <!-- Windows RE Tools partition -->
-                        <CreatePartition wcm:action="add">
-                            <Order>1</Order>
-                            <Type>Primary</Type>
-                            <Size>300</Size>
-                        </CreatePartition>
-
                         <!-- System partition (ESP) -->
                         <CreatePartition wcm:action="add">
-                            <Order>2</Order>
+                            <Order>1</Order>
                             <Type>EFI</Type>
-                            <Size>100</Size>
+                            <Size>260</Size>
                         </CreatePartition>
-
                         <!-- Microsoft reserved partition (MSR) -->
                         <CreatePartition wcm:action="add">
-                            <Order>3</Order>
+                            <Order>2</Order>
                             <Type>MSR</Type>
-                            <Size>128</Size>
+                            <Size>16</Size>
                         </CreatePartition>
-
                         <!-- Windows partition -->
                         <CreatePartition wcm:action="add">
-                            <Order>4</Order>
+                            <Order>3</Order>
                             <Type>Primary</Type>
                             <Extend>true</Extend>
                         </CreatePartition>
                     </CreatePartitions>
-
                     <ModifyPartitions>
-
-                        <!-- Windows RE Tools partition -->
+                        <!-- System partition (ESP) -->
                         <ModifyPartition wcm:action="add">
                             <Order>1</Order>
                             <PartitionID>1</PartitionID>
-                            <Label>WINRE</Label>
-                            <Format>NTFS</Format>
-                            <TypeID>de94bba4-06d1-4d40-a16a-bfd50179d6ac</TypeID>
-                        </ModifyPartition>
-
-                        <!-- System partition (ESP) -->
-                        <ModifyPartition wcm:action="add">
-                            <Order>2</Order>
-                            <PartitionID>2</PartitionID>
                             <Label>System</Label>
                             <Format>FAT32</Format>
                         </ModifyPartition>
-
                         <!-- MSR partition does not need to be modified -->
+                        <ModifyPartition wcm:action="add">
+                            <Order>2</Order>
+                            <PartitionID>2</PartitionID>
+                        </ModifyPartition>
+                        <!-- Windows partition -->
                         <ModifyPartition wcm:action="add">
                             <Order>3</Order>
                             <PartitionID>3</PartitionID>
-                        </ModifyPartition>
-
-                        <!-- Windows partition -->
-                        <ModifyPartition wcm:action="add">
-                            <Order>4</Order>
-                            <PartitionID>4</PartitionID>
                             <Label>Windows</Label>
                             <Letter>C</Letter>
                             <Format>NTFS</Format>
@@ -146,34 +123,16 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows 10 Enterprise Evaluation</Value>
+                            <Value>Windows 11 Enterprise Evaluation</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
                         <DiskID>0</DiskID>
-                        <PartitionID>4</PartitionID>
+                        <PartitionID>3</PartitionID>
                     </InstallTo>
                 </OSImage>
             </ImageInstall>
             <UserData>
-                <!--
-                    NOTE: If you are re-configuring this for use of a retail key
-                    and using a retail ISO, you need to adjust the <ProductKey> block
-                    below to look like this:
-
-                    <ProductKey>
-                        <Key>33PXH-7Y6KF-2VJC9-XBBR8-HVTHH</Key>
-                        <WillShowUI>Never</WillShowUI>
-                    </ProductKey>
-
-                    Notice the addition of the `<Key>` element.
-                -->
-
-                <!-- Product Key from http://technet.microsoft.com/en-us/library/jj612867.aspx -->
-                <ProductKey>
-                    <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
-                    <WillShowUI>OnError</WillShowUI>
-                </ProductKey>
                 <AcceptEula>true</AcceptEula>
                 <FullName>Vagrant</FullName>
                 <Organization>Vagrant Inc.</Organization>
