@@ -147,7 +147,7 @@ The multi-stage approach provides significant time savings for iterative develop
 **Stage fails to start**
 - Verify previous stage artifacts exist
 - Check `logs/stageN.log` for errors
-- Ensure VirtIO ISO is present at `~/.local/share/libvirt/images/virtio-win.iso`
+- Ensure VirtIO ISO is present at `./iso/virtio-win.iso`
 
 **Artifact validation fails**
 - Check disk space (each stage requires ~20-30 GB)

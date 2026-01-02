@@ -189,6 +189,7 @@ launch_win11() {
     log_info "Launching Windows 11 image..."
     
     # Check if image exists
+    #local image_path="output-stage4/windows-11-x64"
     local image_path="output-vm/windows-11-x64"
     if [[ ! -f "$image_path" ]]; then
         log_error "Image not found: $image_path"

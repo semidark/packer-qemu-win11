@@ -39,7 +39,7 @@ sudo apt install packer
 2. **VirtIO Drivers**: Download from [virtio-win GitHub](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md)
 3. **OVMF Firmware**: Usually included with QEMU installation
 
-Place the virtio-win.iso file at `~/.local/share/libvirt/images/virtio-win.iso`
+Place the virtio-win.iso file at `./iso/virtio-win.iso`
 
 ## Git Submodules
 

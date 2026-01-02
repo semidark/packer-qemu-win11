@@ -121,7 +121,7 @@ validate_prerequisites() {
     done
     
     # Check if virtio-win.iso exists
-    local virtio_iso="${HOME}/.local/share/libvirt/images/virtio-win.iso"
+    local virtio_iso="./iso/virtio-win.iso"
     if [[ ! -f "$virtio_iso" ]]; then
         log_warning "virtio-win.iso not found at $virtio_iso"
         log_warning "Please download it from https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"

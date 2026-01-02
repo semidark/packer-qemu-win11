@@ -78,7 +78,7 @@ Connect with VNC viewer to `localhost:5900` to see Windows login screen.
 ### Pre-Build Verification
 - All prerequisites installed (QEMU/KVM, Packer, VirtIO drivers, OVMF)
 - Windows 11 ISO downloaded and checksum verified
-- virtio-win.iso available at `~/.local/share/libvirt/images/virtio-win.iso`
+- virtio-win.iso available at `./iso/virtio-win.iso`
 
 ### Post-Build Verification
 - Image integrity check passes with no errors
