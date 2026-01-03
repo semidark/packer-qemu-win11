@@ -123,7 +123,7 @@ variable "chocolatey_packages_json" {
 }
 
 locals {
-  virtio_iso_path = "${var.local_libvirt_images}/virtio-win.iso"
+  virtio_iso_path = "${path.root}/iso/virtio-win.iso"
 }
 
 source "qemu" "stage3" {

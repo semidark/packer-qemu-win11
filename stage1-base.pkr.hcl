@@ -81,7 +81,7 @@ variable "disk_size" {
 
 locals {
   iso_target_path = "${var.local_libvirt_images}/${var.os_name}-${var.os_version}-${var.os_arch}.iso"
-  virtio_iso_path = "${var.local_libvirt_images}/virtio-win.iso"
+  virtio_iso_path = "${path.root}/iso/virtio-win.iso"
 }
 
 source "qemu" "stage1" {

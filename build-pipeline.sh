@@ -449,24 +449,15 @@ main() {
     # Validate prerequisites
     validate_prerequisites
     
-    # Validate that required artifacts exist for stages > 1
-    for ((stage=START_STAGE; stage<=END_STAGE; stage++)); do
-        if [[ $stage -gt 1 ]]; then
-            local prev_stage=$((stage - 1))
-            if ! validate_artifact $prev_stage; then
-                if [[ $stage -eq START_STAGE ]]; then
-                    log_error "Required artifact for stage $prev_stage not found. Please build stage $prev_stage first."
-                    exit 1
-                else
-                    log_info "Building missing prerequisite stage $prev_stage"
-                    if ! run_stage $prev_stage; then
-                        log_error "Failed to build prerequisite stage $prev_stage"
-                        exit 1
-                    fi
-                fi
-            fi
+    # Validate that required artifacts exist for stages > START_STAGE
+    if [[ $START_STAGE -gt 1 ]]; then
+        local prev_stage=$((START_STAGE - 1))
+        if ! validate_artifact $prev_stage; then
+            log_error "Required artifact for stage $prev_stage not found. Please build stage $prev_stage first."
+            log_error "Run: $0 --from-stage $prev_stage"
+            exit 1
         fi
-    done
+    fi
     
     # Run stages
     local start_time=$(date +%s)
