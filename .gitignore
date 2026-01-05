@@ -10,3 +10,5 @@ packer_cache/
 inspiration/
 logs/
 *.iso
+output-vm/
+**/*archive/*
