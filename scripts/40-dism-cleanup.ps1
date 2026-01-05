@@ -13,6 +13,33 @@ function Write-Log {
 
 Write-Log "Starting DISM cleanup script..."
 
+# Disable System Restore to save ~1.5 GB
+Write-Log "Disabling System Restore..."
+try {
+    Disable-ComputerRestore -Drive "C:\"
+    # Also delete existing restore points
+    vssadmin delete shadows /all /quiet | Out-Null
+    Write-Log "System Restore disabled and existing restore points deleted"
+} catch {
+    Write-Warning "Error occurred while disabling System Restore: $($_.Exception.Message)"
+    Write-Log "Continuing with build process despite System Restore disable error..."
+}
+
+# Disable Reserved Storage to save ~6.5 GB
+Write-Log "Disabling Reserved Storage..."
+try {
+    $reservedStorageResult = Start-Process -FilePath "Dism.exe" -ArgumentList "/Online", "/Set-ReservedStorageState", "/State:Disabled" -Wait -PassThru -NoNewWindow
+    if ($reservedStorageResult.ExitCode -eq 0) {
+        Write-Log "Reserved Storage disabled successfully"
+    } else {
+        Write-Warning "DISM returned exit code $($reservedStorageResult.ExitCode) when disabling Reserved Storage"
+        Write-Log "Continuing with build process despite Reserved Storage disable error..."
+    }
+} catch {
+    Write-Warning "Error occurred while disabling Reserved Storage: $($_.Exception.Message)"
+    Write-Log "Continuing with build process despite Reserved Storage disable error..."
+}
+
 # Run DISM cleanup with /ResetBase to remove superseded components
 Write-Log "Running DISM cleanup with /StartComponentCleanup /ResetBase..."
 
