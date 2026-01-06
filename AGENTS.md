@@ -52,6 +52,11 @@ The build is divided into 4 stages:
    - Final image optimization
    - Output: `output-stage4/windows-11-x64.qcow2`
 
+5. **Stage 5: Vagrant Box Creation** (~5 minutes)
+  - Creates a Vagrant box for libvirt provider
+  - Includes TPM support and synced folders
+  - Output: `output-vagrant/windows-11-x64.box`
+
 ### Build Commands
 
 ```shell
@@ -72,7 +77,37 @@ The build is divided into 4 stages:
 
 # Debug mode (keep temporary files)
 ./build-pipeline.sh --debug
+
+# Create Vagrant box from Stage 4 artifact
+./build-pipeline.sh --vagrant
+
+# Set a custom version for the Vagrant box
+./build-pipeline.sh --vagrant --box-version 1.2.0
 ```
+
+### Vagrant Box Creation
+
+To create a Vagrant box, the pipeline uses the output from Stage 4. This stage is triggered by the `--vagrant` flag.
+
+**Prerequisites**
+- `vagrant-libvirt` plugin: `vagrant plugin install vagrant-libvirt`
+- `swtpm`: Required for TPM emulation.
+
+**Usage**
+1.  Add the box to Vagrant:
+    ```shell
+    vagrant box add windows-11 output-vagrant/windows-11-x64.box
+    ```
+2.  Initialize a new Vagrant environment:
+    ```shell
+    vagrant init windows-11
+    ```
+3.  Start the virtual machine:
+    ```shell
+    vagrant up --provider=libvirt
+    ```
+
+The included [`vagrant/Vagrantfile.template`](vagrant/Vagrantfile.template) is used to create the `Vagrantfile` within the box.
 
 ### When to Use Each Stage
 
@@ -90,11 +125,13 @@ The build is divided into 4 stages:
 - `--from-stage 2`: Rebuild from updates stage (e.g., after changing debloat settings)
 - `--from-stage 3`: Rebuild from software stage (e.g., after modifying Chocolatey packages)
 - `--from-stage 4`: Rebuild only final stage (e.g., after changing compaction settings)
+- `--from-stage 5`: Resume from Vagrant box creation
 
 **Single Stage Rebuilds**
 - `--stage 2`: Re-run updates/debloat only
 - `--stage 3`: Re-install software only
 - `--stage 4`: Re-run final preparation only
+- `--stage 5`: Re-run Vagrant box creation only
 
 ### Stage-Specific Files
 
@@ -104,6 +141,7 @@ Each stage has its own template and variable files:
 - **Stage 2**: `stage2-updates.pkr.hcl`, `stage2-vars.pkrvars.hcl`
 - **Stage 3**: `stage3-software.pkr.hcl`, `stage3-vars.pkrvars.hcl`
 - **Stage 4**: `stage4-finalize.pkr.hcl`, `stage4-vars.pkrvars.hcl`
+- **Stage 5**: `stage5-vagrant.pkr.hcl`, `stage5-vars.pkrvars.hcl`
 - **Global**: `global-vars.pkrvars.hcl` (shared across all stages)
 
 ### Customization

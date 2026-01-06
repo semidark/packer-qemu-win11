@@ -16,7 +16,7 @@ efi_firmware_code = "/usr/share/OVMF/OVMF_CODE_4M.secboot.fd"
 efi_firmware_vars = "/usr/share/OVMF/OVMF_VARS_4M.ms.fd"
 
 # Build Configuration
-headless = false
+headless = true
 
 # VM Specifications
 memory = 4096

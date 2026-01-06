@@ -20,11 +20,13 @@ STAGE1_TEMPLATE="stage1-base.pkr.hcl"
 STAGE2_TEMPLATE="stage2-updates.pkr.hcl"
 STAGE3_TEMPLATE="stage3-software.pkr.hcl"
 STAGE4_TEMPLATE="stage4-finalize.pkr.hcl"
+STAGE5_TEMPLATE="stage5-vagrant.pkr.hcl"
 
 STAGE1_VARS="stage1-vars.pkrvars.hcl"
 STAGE2_VARS="stage2-vars.pkrvars.hcl"
 STAGE3_VARS="stage3-vars.pkrvars.hcl"
 STAGE4_VARS="stage4-vars.pkrvars.hcl"
+STAGE5_VARS="stage5-vars.pkrvars.hcl"
 
 GLOBAL_VARS="global-vars.pkrvars.hcl"
 OS_VARS="os_pkrvars/windows-11-x64.pkrvars.hcl"
@@ -34,13 +36,15 @@ STAGE1_TIME=30  # minutes
 STAGE2_TIME=210 # minutes (3.5 hours)
 STAGE3_TIME=25  # minutes
 STAGE4_TIME=10  # minutes
+STAGE5_TIME=15  # minutes
 
 # Default values
 START_STAGE=1
-END_STAGE=4
+END_STAGE=5
 CLEAN=false
 SKIP_UPDATES=false
 DEBUG=false
+BOX_VERSION="1.0.0"
 
 # Logging functions
 log() {
@@ -70,8 +74,10 @@ show_usage() {
     echo "Multi-stage Packer build pipeline for Windows 11"
     echo ""
     echo "Options:"
-    echo "  --from-stage N    Start from stage N (1-4)"
-    echo "  --stage N         Build only stage N (1-4)"
+    echo "  --from-stage N    Start from stage N (1-5)"
+    echo "  --stage N         Build only stage N (1-5)"
+    echo "  --vagrant         Alias for --stage 5"
+    echo "  --box-version V   Set the Vagrant box version (default: 1.0.0)"
     echo "  --clean           Remove all output directories before building"
     echo "  --skip-updates    Skip Windows Updates in Stage 2"
     echo "  --debug           Enable debug mode (keep temporary files)"
@@ -83,6 +89,7 @@ show_usage() {
     echo "  $0 --from-stage 3     # Resume from Stage 3"
     echo "  $0 --stage 2          # Rebuild only Stage 2"
     echo "  $0 --skip-updates     # Build without Windows Updates"
+    echo "  $0 --vagrant --box-version 1.1.0"
 }
 
 # Function to validate prerequisites
@@ -104,13 +111,16 @@ validate_prerequisites() {
         "$STAGE2_TEMPLATE"
         "$STAGE3_TEMPLATE"
         "$STAGE4_TEMPLATE"
+        "$STAGE5_TEMPLATE"
         "$GLOBAL_VARS"
         "$OS_VARS"
         "$STAGE1_VARS"
         "$STAGE2_VARS"
         "$STAGE3_VARS"
         "$STAGE4_VARS"
+        "$STAGE5_VARS"
         "answer_files/windows-11-x64/Autounattend.xml"
+        "vagrant/Vagrantfile.template"
     )
     
     for file in "${required_files[@]}"; do
@@ -172,8 +182,12 @@ validate_artifact() {
             dir="output-stage3"
             name="stage3-software"
             ;;
+        4)
+            dir="output-stage4"
+            name="windows-11-x64"
+            ;;
         *)
-            log_error "Invalid stage: $stage"
+            log_error "Invalid stage for artifact validation: $stage"
             return 1
             ;;
     esac
@@ -266,6 +280,12 @@ run_stage() {
             stage_name="stage4"
             estimated_time=$STAGE4_TIME
             ;;
+        5)
+            template="$STAGE5_TEMPLATE"
+            vars_file="$STAGE5_VARS"
+            stage_name="stage5"
+            estimated_time=$STAGE5_TIME
+            ;;
         *)
             log_error "Invalid stage: $stage"
             exit 1
@@ -284,6 +304,10 @@ run_stage() {
     if [[ $stage -eq 2 ]] && [[ "$SKIP_UPDATES" == true ]]; then
         log_info "Skipping Windows Updates for $stage_name"
         packer_cmd+=" -var install_updates=false"
+    fi
+
+    if [[ $stage -eq 5 ]]; then
+        packer_cmd+=" -var box_version=$BOX_VERSION"
     fi
     
     # Add the template to the command
@@ -307,10 +331,11 @@ run_stage() {
             2) ensure_qcow2_alias "output-stage2" "stage2-updated" ;;
             3) ensure_qcow2_alias "output-stage3" "stage3-software" ;;
             4) ensure_qcow2_alias "output-stage4" "windows-11-x64" ;;
+            5) ensure_qcow2_alias "output-vagrant" "windows-11-x64" ;;
         esac
 
-        # Validate artifact for stages 1-3
-        if [[ $stage -lt 4 ]]; then
+        # Validate artifact for stages 1-4
+        if [[ $stage -lt 5 ]]; then
             if validate_artifact $stage; then
                 log_success "Artifact for $stage_name validated"
             else
@@ -333,6 +358,7 @@ clean_outputs() {
     rm -rf output-stage2 2>/dev/null || true
     rm -rf output-stage3 2>/dev/null || true
     rm -rf output-stage4 2>/dev/null || true
+    rm -rf output-vagrant 2>/dev/null || true
     rm -rf tmp/* 2>/dev/null || true
     log_success "Cleaned output directories"
 }
@@ -348,18 +374,25 @@ clean_from_stage() {
             rm -rf output-stage2 2>/dev/null || true
             rm -rf output-stage3 2>/dev/null || true
             rm -rf output-stage4 2>/dev/null || true
+            rm -rf output-vagrant 2>/dev/null || true
             ;;
         2)
             rm -rf output-stage2 2>/dev/null || true
             rm -rf output-stage3 2>/dev/null || true
             rm -rf output-stage4 2>/dev/null || true
+            rm -rf output-vagrant 2>/dev/null || true
             ;;
         3)
             rm -rf output-stage3 2>/dev/null || true
             rm -rf output-stage4 2>/dev/null || true
+            rm -rf output-vagrant 2>/dev/null || true
             ;;
         4)
             rm -rf output-stage4 2>/dev/null || true
+            rm -rf output-vagrant 2>/dev/null || true
+            ;;
+        5)
+            rm -rf output-vagrant 2>/dev/null || true
             ;;
         *)
             log_error "Invalid stage: $stage"
@@ -375,8 +408,8 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         --from-stage)
             START_STAGE="$2"
-            if [[ ! "$START_STAGE" =~ ^[1-4]$ ]]; then
-                log_error "Invalid stage number: $START_STAGE (must be 1-4)"
+            if [[ ! "$START_STAGE" =~ ^[1-5]$ ]]; then
+                log_error "Invalid stage number: $START_STAGE (must be 1-5)"
                 exit 1
             fi
             shift 2
@@ -384,10 +417,19 @@ while [[ $# -gt 0 ]]; do
         --stage)
             START_STAGE="$2"
             END_STAGE="$2"
-            if [[ ! "$START_STAGE" =~ ^[1-4]$ ]]; then
-                log_error "Invalid stage number: $START_STAGE (must be 1-4)"
+            if [[ ! "$START_STAGE" =~ ^[1-5]$ ]]; then
+                log_error "Invalid stage number: $START_STAGE (must be 1-5)"
                 exit 1
             fi
+            shift 2
+            ;;
+        --vagrant)
+            START_STAGE=5
+            END_STAGE=5
+            shift
+            ;;
+        --box-version)
+            BOX_VERSION="$2"
             shift 2
             ;;
         --clean)
@@ -498,6 +540,9 @@ main() {
         log_info "Final image is available in output-vm/windows-11-x64.qcow2"
         log_info "You can test it with: ./build.sh test"
         log_info "You can launch it with: ./build.sh launch"
+    elif [[ $END_STAGE -eq 5 ]]; then
+        log_info "Vagrant box is available in output-vagrant/windows-11-x64.box"
+        log_info "You can add it to Vagrant with: vagrant box add --name windows-11-x64 output-vagrant/windows-11-x64.box"
     fi
 }
 

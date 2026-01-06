@@ -195,6 +195,42 @@ TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.
 
 For the recommended multi-stage approach, use the [`build-pipeline.sh`](build-pipeline.sh) script as described above.
 
+## Vagrant Box Output
+
+This project can automatically create a Vagrant box for the `libvirt` provider as the final stage of the build pipeline. This allows for easy distribution and use of the built Windows 11 image in a Vagrant environment.
+
+### Quick Start
+
+1.  **Build the Vagrant box**:
+
+    ```shell
+    ./build-pipeline.sh --vagrant
+    ```
+
+2.  **Add the box to Vagrant**:
+
+    ```shell
+    vagrant box add windows-11 output-vagrant/windows-11-x64.box
+    ```
+
+3.  **Initialize and start the VM**:
+
+    ```shell
+    vagrant init windows-11
+    vagrant up --provider=libvirt
+    ```
+
+### Prerequisites
+
+- **`vagrant-libvirt` plugin**: Install with `vagrant plugin install vagrant-libvirt`
+- **`swtpm`**: Required for TPM emulation.
+
+### Security Warning
+
+**⚠️ The Vagrant box is configured with default credentials (`vagrant`/`vagrant`) and is intended for development use only.** Do not use it in production without proper hardening.
+
+For detailed documentation on the Vagrant box creation process, see the [Vagrant Box Creation](AGENTS.md#vagrant-box-creation) section in `AGENTS.md`.
+
 ## Windows Update Management
 
 This project provides flexible Windows Update control with both build-time and runtime mechanisms for managing update installation.
