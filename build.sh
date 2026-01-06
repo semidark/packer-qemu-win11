@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Windows 11 Packer Build Script
-# Optimized for performance, reliability, and maintainability
+# Windows 11 Packer Launch and Test Script
+# Used for launching and testing built Windows 11 images
 
 # Exit on any error
 set -e
@@ -67,7 +67,6 @@ check_prerequisites() {
     
     # Check if required files exist
     local required_files=(
-        "windows.pkr.hcl"
         "os_pkrvars/windows-11-x64.pkrvars.hcl"
         "answer_files/windows-11-x64/Autounattend.xml"
     )
@@ -95,14 +94,9 @@ check_prerequisites() {
     log_success "All prerequisites met"
 }
 
-# Function to initialize Packer
+# Function to initialize Packer (deprecated - use build-pipeline.sh instead)
 init_packer() {
-    log_info "Initializing Packer plugins..."
-    if ! PACKER_LOG=1 packer init windows.pkr.hcl; then
-        log_error "Failed to initialize Packer"
-        exit 1
-    fi
-    log_success "Packer initialized successfully"
+    log_warning "Legacy Packer initialization is deprecated. Use build-pipeline.sh instead."
 }
 
 # Function to clean previous builds
@@ -127,42 +121,17 @@ setup_temp_dir() {
     log_success "Temporary directory ready"
 }
 
-# Function to build the image
+# Function to build the image (deprecated - use build-pipeline.sh instead)
 build_image() {
-    log_info "Starting Packer build..."
-    
-    # Export variables for Packer
-    export TMPDIR="$(pwd)/tmp"
-    export PACKER_LOG=1
-    
-    # Prepare Packer command with optional variables
-    local packer_cmd="TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.pkrvars.hcl"
-    
-    # Add install_updates=false if skipping Windows Updates
-    if [[ "$SKIP_WINDOWS_UPDATES" == true ]]; then
-        log_info "Building without Windows Updates (faster build)"
-        packer_cmd+=" -var install_updates=false"
-    else
-        log_info "Building with Windows Updates (standard build)"
-    fi
-    
-    # Add the HCL file to the command
-    packer_cmd+=" windows.pkr.hcl"
-    
-    # Run the build
-    if eval "$packer_cmd"; then
-        log_success "Build completed successfully!"
-        return 0
-    else
-        log_error "Build failed"
-        return 1
-    fi
+    log_error "Legacy build process is deprecated. Please use build-pipeline.sh for building images."
+    log_info "For more information, see the multi-stage architecture documentation."
+    return 1
 }
 
 # Function to show usage
 show_usage() {
     echo "Usage: $0 [build|launch|test]"
-    echo "  build  - Build the Windows 11 image"
+    echo "  build  - Build the Windows 11 image (DEPRECATED - use build-pipeline.sh instead)"
     echo "  launch - Launch the built image for testing"
     echo "  test   - Test the built image using QEMU Guest Agent"
     echo ""
@@ -189,6 +158,7 @@ launch_win11() {
     log_info "Launching Windows 11 image..."
     
     # Check if image exists
+    #local image_path="output-stage4/windows-11-x64"
     local image_path="output-vm/windows-11-x64"
     if [[ ! -f "$image_path" ]]; then
         log_error "Image not found: $image_path"
@@ -420,30 +390,11 @@ done
 main() {
     case "$COMMAND" in
         build)
-            log_info "Starting Windows 11 Packer build process"
-            
-            # Check prerequisites
-            check_prerequisites
-            
-            # Setup temporary directory
-            setup_temp_dir
-            
-            # Clean previous builds if requested
-            if [[ "$CLEAN_BUILD" == true ]]; then
-                clean_build
-            fi
-            
-            # Initialize Packer
-            init_packer
-            
-            # Build the image
-            if build_image; then
-                log_success "Windows 11 image built successfully!"
-                log_info "Output can be found in the output-vm directory"
-            else
-                log_error "Failed to build Windows 11 image"
-                exit 1
-            fi
+            log_warning "The legacy build command is deprecated and no longer functional."
+            log_warning "Please use build-pipeline.sh for building Windows 11 images."
+            log_info "Example: ./build-pipeline.sh"
+            log_info "For more information, see the multi-stage architecture documentation."
+            exit 1
             ;;
         launch)
             # Setup temporary directory

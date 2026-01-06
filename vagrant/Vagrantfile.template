@@ -1,0 +1,80 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Windows 11 Enterprise Evaluation - Vagrant Box for libvirt
+#
+# This Vagrantfile is embedded in the Vagrant box and provides default settings.
+# You can override any of these settings in your project's Vagrantfile.
+#
+# Example override in your Vagrantfile:
+#   Vagrant.configure("2") do |config|
+#     config.vm.box = "windows-11-x64"
+#     config.vm.provider :libvirt do |libvirt|
+#       libvirt.cpus = 4
+#       libvirt.memory = 8192
+#     end
+#   end
+
+Vagrant.configure("2") do |config|
+  # Provider-specific configuration for libvirt
+  config.vm.provider :libvirt do |libvirt|
+    # Machine type and CPU
+    # Use q35 for modern Windows with PCIe support
+    libvirt.machine_type = "q35"
+    libvirt.cpu_mode = "host-passthrough"
+    
+    # Resources - adjust these in your Vagrantfile as needed
+    # Minimum recommended: 2 CPUs, 4096 MB RAM for Windows 11
+    libvirt.cpus = 2
+    libvirt.memory = 4096
+    
+    # Graphics - SPICE provides better Windows integration
+    libvirt.graphics_type = "spice"
+    libvirt.video_type = "qxl"
+    
+    # UEFI Firmware (CRITICAL for Windows 11)
+    # These paths are standard for Debian/Ubuntu 
+    # For Fedora/RHEL/CentOS, you may need to adjust to:
+    #   /usr/share/edk2/ovmf/OVMF_CODE_4M.secboot.fd
+    #   /usr/share/edk2/ovmf/OVMF_VARS_4M.secboot.fd
+    libvirt.loader = "/usr/share/OVMF/OVMF_CODE_4M.secboot.fd"
+    libvirt.nvram = "/usr/share/OVMF/OVMF_VARS_4M.ms.fd"
+    
+    # TPM 2.0 (REQUIRED for Windows 11)
+    # Requires swtpm package to be installed on the host
+    libvirt.tpm_model = "tpm-crb"
+    libvirt.tpm_type = "emulator"
+    libvirt.tpm_version = "2.0"
+    
+    # Disk configuration - SCSI with VirtIO for best performance
+    libvirt.disk_bus = "scsi"
+    libvirt.disk_device = "sda"
+    libvirt.disk_driver :cache => "writeback", :discard => "unmap"
+    
+    # Network - VirtIO for best performance
+    libvirt.nic_model_type = "virtio"
+  end
+  
+  # WinRM communicator (default for Windows)
+  config.vm.communicator = "winrm"
+  config.winrm.username = "vagrant"
+  config.winrm.password = "vagrant"
+  config.winrm.transport = :plaintext
+  config.winrm.basic_auth_only = true
+  config.winrm.timeout = 1800
+  
+  # SSH communicator (alternative, OpenSSH is installed)
+  # To use SSH instead of WinRM, set: config.vm.communicator = "ssh"
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
+  config.ssh.insert_key = false
+  
+  # Network configuration with auto_correct to avoid port conflicts
+  config.vm.network :forwarded_port, guest: 3389, host: 33389, id: "rdp", auto_correct: true
+  config.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct: true
+  config.vm.network :forwarded_port, guest: 22, host: 2222, id: "ssh", auto_correct: true
+  
+  # Synced folders (disabled by default for Windows)
+  # Windows synced folders require SMB or rsync
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+end

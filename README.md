@@ -39,7 +39,7 @@ sudo apt install packer
 2. **VirtIO Drivers**: Download from [virtio-win GitHub](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md)
 3. **OVMF Firmware**: Usually included with QEMU installation
 
-Place the virtio-win.iso file at `~/.local/share/libvirt/images/virtio-win.iso`
+Place the virtio-win.iso file at `./iso/virtio-win.iso`
 
 ## Git Submodules
 
@@ -126,7 +126,35 @@ Several fixes were implemented to ensure Windows 11 compatibility:
 
 ## Build Process
 
-### Using the Build Script (Recommended)
+### Using the Multi-Stage Build Pipeline (Recommended)
+
+The project now supports a multi-stage build pipeline that separates the image creation process into distinct stages for optimized build times and modular customization. This is now the recommended approach for building images.
+
+```bash
+# Full multi-stage build (all stages)
+./build-pipeline.sh
+
+# Clean build from scratch
+./build-pipeline.sh --clean
+
+# Build without Windows Updates (faster development builds)
+./build-pipeline.sh --skip-updates
+
+# Resume from a specific stage (requires previous stage artifacts)
+./build-pipeline.sh --from-stage 3
+
+# Rebuild only a specific stage
+./build-pipeline.sh --stage 2
+
+# Debug mode (keep temporary files)
+./build-pipeline.sh --debug
+```
+
+For more details about the multi-stage build pipeline, see the [Multi-Stage Build Pipeline](AGENTS.md#multi-stage-build-pipeline) section in AGENTS.md.
+
+### Using the Legacy Build Script
+
+The original build script is still available for single-stage builds:
 
 ```bash
 # Normal build
@@ -145,17 +173,63 @@ Several fixes were implemented to ensure Windows 11 compatibility:
 ./build.sh test
 ```
 
-**Note**: With Phase 1 enhancements, build time has increased from ~30-45 minutes to ~3-4 hours due to Windows Update integration. However, this provides security-enhanced images with the latest patches. The disk compaction feature reduces final image size by ~40% (from ~12-15GB to ~8-9GB).
+**Note**: With Phase 1 enhancements, a full build with Windows Updates now takes ~3-4 hours. However, the new multi-stage build pipeline provides significant time savings for iterative development:
+- **Full build with updates**: ~3-4 hours (all stages)
+- **Software changes only**: ~30 minutes (Stage 3 only)
+- **Final tweaks only**: ~10 minutes (Stage 4 only)
+- **Development builds (skip updates)**: ~1 hour (Stages 1, 3, and 4 only)
+
+The disk compaction feature reduces final image size by ~40% (from ~12-15GB to ~8-9GB).
 
 For detailed information about Phase 1 implementation, see [Phase 1 Implementation Documentation](docs/PHASE1-IMPLEMENTATION.md).
 
-### Manual Build
+### Manual Build (Legacy Single-Stage)
+
+The original single-stage build process is still available but is no longer recommended:
 
 ```shell
 mkdir -p tmp
 PACKER_LOG=1 packer init windows.pkr.hcl
 TMPDIR=$(pwd)/tmp PACKER_LOG=1 packer build -var-file os_pkrvars/windows-11-x64.pkrvars.hcl windows.pkr.hcl
 ```
+
+For the recommended multi-stage approach, use the [`build-pipeline.sh`](build-pipeline.sh) script as described above.
+
+## Vagrant Box Output
+
+This project can automatically create a Vagrant box for the `libvirt` provider as the final stage of the build pipeline. This allows for easy distribution and use of the built Windows 11 image in a Vagrant environment.
+
+### Quick Start
+
+1.  **Build the Vagrant box**:
+
+    ```shell
+    ./build-pipeline.sh --vagrant
+    ```
+
+2.  **Add the box to Vagrant**:
+
+    ```shell
+    vagrant box add windows-11 output-vagrant/windows-11-x64.box
+    ```
+
+3.  **Initialize and start the VM**:
+
+    ```shell
+    vagrant init windows-11
+    vagrant up --provider=libvirt
+    ```
+
+### Prerequisites
+
+- **`vagrant-libvirt` plugin**: Install with `vagrant plugin install vagrant-libvirt`
+- **`swtpm`**: Required for TPM emulation.
+
+### Security Warning
+
+**⚠️ The Vagrant box is configured with default credentials (`vagrant`/`vagrant`) and is intended for development use only.** Do not use it in production without proper hardening.
+
+For detailed documentation on the Vagrant box creation process, see the [Vagrant Box Creation](AGENTS.md#vagrant-box-creation) section in `AGENTS.md`.
 
 ## Windows Update Management
 
@@ -165,8 +239,8 @@ This project provides flexible Windows Update control with both build-time and r
 
 Control Windows Update installation during the Packer build process using the `install_updates` variable:
 
-- `install_updates = true` (default): Windows Updates are installed during build, adding 3-4 hours to build time but providing security-enhanced images
-- `install_updates = false`: Skips Windows Update installation for faster builds (development/testing)
+- `install_updates = true` (default): Windows Updates are installed during Stage 2, adding 3-4 hours to that stage but providing security-enhanced images
+- `install_updates = false`: Skips Windows Update installation in Stage 2 for faster builds (development/testing)
 
 To build without Windows Updates:
 ```shell
